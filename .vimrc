@@ -33,3 +33,6 @@ set autoread
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
+
+"Toggle auto-indenting for code paste
+set pastetoggle=<F2>
