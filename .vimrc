@@ -36,3 +36,6 @@ set ffs=unix,dos,mac
 
 "Toggle auto-indenting for code paste
 set pastetoggle=<F2>
+
+"Display incomplete commands
+set showcmd
