@@ -19,3 +19,6 @@ setopt prompt_subst
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
+
+#Environement variables
+export EDITOR="/usr/bin/vim"
