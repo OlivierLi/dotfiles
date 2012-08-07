@@ -5,10 +5,6 @@ alias "ll"="ls -lrt"
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
 
-compinit
-promptinit
-colors
-
 # bind special keys according to readline configuration
 eval "$(sed -n 's/^/bindkey /; s/: / /p' /etc/inputrc)"
 
