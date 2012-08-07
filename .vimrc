@@ -12,7 +12,7 @@ set autoindent
 " Use smart indenting when starting a new line.
 set smartindent
 
-"DDeactivate arrows to get used to hjkl
+"Deactivate arrows to get used to hjkl
 noremap  <Up> ""
 noremap  <Down> ""
 noremap  <Left> ""
