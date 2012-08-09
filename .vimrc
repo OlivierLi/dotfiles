@@ -24,6 +24,8 @@ inoremap <right> <nop>
 
 "Key remaps
 noremap <Space> <PageDown>
+nnoremap <tab> %
+vnoremap <tab> %
 
 "Misc
 set ignorecase
