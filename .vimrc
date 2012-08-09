@@ -13,10 +13,14 @@ set autoindent
 set smartindent
 
 "Deactivate arrows to get used to hjkl
-noremap  <Up> ""
-noremap  <Down> ""
-noremap  <Left> ""
-noremap  <Right> ""
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
 
 "Key remaps
 noremap <Space> <PageDown>
