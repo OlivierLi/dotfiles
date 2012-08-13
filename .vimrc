@@ -2,6 +2,8 @@ set nocompatible
 
 filetype plugin on
 filetype indent on
+set t_Co=256
+colorscheme ir_black
 
 "Indent stuff
 set expandtab

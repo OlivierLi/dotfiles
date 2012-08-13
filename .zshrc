@@ -6,7 +6,7 @@ autoload -U compinit promptinit colors
 autoload -Uz vcs_info
 
 # bind special keys according to readline configuration
-eval "$(sed -n 's/^/bindkey /; s/: / /p' /etc/inputrc)"
+eval "$(sed -n 's/^/bindkey /; s/: / /p' /etc/inputrc)" > /dev/null
 
 # set zsh in emacs mode
 bindkey -e
