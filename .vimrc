@@ -35,6 +35,7 @@ set smartcase
 set ruler
 set nowrap
 set number
+set incsearch
 
 " Set to auto read when a file is changed from the outside
 set autoread
