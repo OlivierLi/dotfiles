@@ -1,3 +1,12 @@
+# Autoload tmux if we aren't in it.
+if [[ "$TMUX" = "" ]] then 
+    TERM=xterm-256color;
+    tmux;
+fi
+
+# This makes cd=pushd
+setopt AUTO_PUSHD
+
 #Aliases
 alias "ls"="ls --color=auto"
 alias "ll"="ls -lrt"
@@ -22,3 +31,5 @@ SAVEHIST=5000
 
 #Environement variables
 export EDITOR="/usr/bin/vim"
+
+PS1="%(!.${FG_BRIGHT_RED}.${FG_BRIGHT_GREEN})%n@%m${COLOR_RESET}:${FG_BRIGHT_BLUE}%1~${COLOR_RESET}%(!.#.$) "
