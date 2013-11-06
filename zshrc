@@ -13,6 +13,7 @@ setopt AUTO_PUSHD
 #Aliases
 alias "ls"="ls --color=auto"
 alias "ll"="ls -lrt"
+alias "up"="sudo apt-get update && sudo apt-get upgrade"
 
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
