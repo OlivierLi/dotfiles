@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 # Autoload tmux if we aren't in it.
 if [[ "$TMUX" = "" ]] then 
     TERM=xterm-256color;
