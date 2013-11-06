@@ -1,0 +1,107 @@
+background yes
+update_interval 1
+
+cpu_avg_samples 2
+net_avg_samples 2
+temperature_unit celsius
+
+double_buffer yes
+no_buffers yes
+text_buffer_size 2048
+
+gap_x 25
+gap_y 0
+minimum_size 450 400
+maximum_width 450
+own_window yes
+own_window_type normal
+own_window_transparent yes
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+border_inner_margin 0
+border_outer_margin 0
+border_width 1
+alignment top_left
+
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+override_utf8_locale yes
+use_xft yes
+xftfont caviar dreams:size=8
+xftalpha 0.5
+uppercase no
+
+default_color FFFFFF
+color1 DDDDDD
+color2 AAAAAA
+color3 888888
+color4 666666
+
+# Lua Load  #
+lua_load ~/conky_blue/clock_rings.lua
+lua_draw_hook_pre clock_rings
+
+TEXT
+#----------------------------------------------------------------------------------------------------------------------------------------
+#					         Time and date 
+#----------------------------------------------------------------------------------------------------------------------------------------
+${voffset 7}${font Radio Space:size=16}${color 0ABFFF}${time %A}${font}$color${font Radio Space:size=38}${goto 167}${voffset -8} ${time %e}${font}
+${font Radio Space:size=18}${voffset -30}${time %b}${font}${voffset -3} ${font Radio Space:size=20}${time %Y}${font}${color 0ABFFF} ${hr 1}
+#----------------------------------------------------------------------------------------------------------------------------------------
+#					           CPU usage 
+#----------------------------------------------------------------------------------------------------------------------------------------
+${color #0ABFFF}${voffset 6}Temp: $color ${acpitemp}.0°C
+${voffset 8}
+#${color #0ABFFF}${voffset 6}GPU temp: ${color}${execi 4 sensors radeon-pci-0100 | grep temp1: | cut -d'+' -f2}
+${color #0ABFFF}${voffset 6}Processes:$color $processes	
+${color #0ABFFF}${voffset 6}Running: $color $running_processes${goto 116}${voffset 30}${cpu cpu0}% ${color 0ABFFF}${goto 116}${voffset 14}CPU1$color${goto 191}${voffset -12}${cpu cpu1}% ${color 0ABFFF}${goto 191}${voffset 12}CPU2 $color ${voffset -40}${goto 265}${voffset 28}${cpu cpu2}% ${color 0ABFFF}${goto 265}${voffset 12}CPU3 ${goto 365}${voffset 28} $color ${goto 334} ${voffset -40} ${cpu cpu3}% ${color 0ABFFF}${goto 334} ${voffset 12} CPU4 
+
+${color #0ABFFF}${voffset -12}FREQ:$color ${freq}MHz
+${color #0ABFFF}${voffset 6}Load:$color ${loadavg}
+#----------------------------------------------------------------------------------------------------------------------------------------
+#						Network
+#----------------------------------------------------------------------------------------------------------------------------------------
+${color 0ABFFF}${voffset 2}${hr 1}
+
+
+${color 0ABFFF}Local address: $color$alignr${addr eth0}
+#Curl command causes gnome keyring error commenting out for now
+#${color 0ABFFF}External address:$color$alignr${pre_exec curl -s ip.nu 2>&1 | grep IP | cut -d' ' -f5 | sed 's/.\{1\}$//'}
+${color #0ABFFF}Down: $color${downspeed eth0} /s ${alignr}${color #0ABFFF}Up:$color ${upspeed eth0} /s
+${downspeedgraph eth0 30,120 000000 0ABFFF} ${alignr}${upspeedgraph eth0 30,120 000000 0ABFFF}$color
+${color #0ABFFF}Total:$color ${totaldown eth0} ${alignr}${color #0ABFFF}Total:$color ${totalup eth0}
+#----------------------------------------------------------------------------------------------------------------------------------------
+#					DISK/RAM/SWAP usage
+#----------------------------------------------------------------------------------------------------------------------------------------
+${color 0ABFFF}${voffset 2}${hr 1}
+${color FFFFFF}${goto 7}${voffset 39}${fs_used_perc /}%
+${color 0ABFFF}${goto 7}DISK
+${color FFFFFF}${goto 102}${voffset -27}${memperc}%
+${color 0ABFFF}${goto 102}RAM
+${color FFFFFF}${goto 192}${voffset -26}${swapperc}%
+${color 0ABFFF}${goto 191}SWAP
+${color 0ABFFF}${voffset -13}${goto 282}MEDIA
+${color FFFFFF}${goto 282}${voffset -24}${fs_used_perc /media/olivier/b81aa89d-832e-4a20-9b4c-b475d791eca0/}%
+#----------------------------------------------------------------------------------------------------------------------------------------
+#					   Running processes
+#----------------------------------------------------------------------------------------------------------------------------------------
+${color 0ABFFF}${voffset 12} ${hr 1}
+${color #0ABFFF}${voffset 5}NAME${goto 122}PID${goto 163}CPU%${goto 210}MEM%$color${voffset 5}
+${top name 1}${goto 115}${top pid 1}${goto 160}${top cpu 1}${goto 205}${top mem 1}
+${top name 2}${goto 115}${top pid 2}${goto 160}${top cpu 2}${goto 205}${top mem 2}
+${top name 3}${goto 115}${top pid 3}${goto 160}${top cpu 3}${goto 205}${top mem 3}
+${top name 5}${goto 115}${top pid 5}${goto 160}${top cpu 5}${goto 205}${top mem 5}
+${top name 6}${goto 115}${top pid 6}${goto 160}${top cpu 6}${goto 205}${top mem 6}
+${top name 7}${goto 115}${top pid 7}${goto 160}${top cpu 7}${goto 205}${top mem 7}
+${top name 8}${goto 115}${top pid 8}${goto 160}${top cpu 8}${goto 205}${top mem 8}
+#----------------------------------------------------------------------------------------------------------------------------------------
+#					     Computer info
+#----------------------------------------------------------------------------------------------------------------------------------------
+${color 0ABFFF}${voffset 2}${hr 1}${voffset 5}
+${color 0ABFFF}OS:$color${alignr}${pre_exec cat /etc/issue.net} $machine
+${color 0ABFFF}Kernel:$color${alignr}${kernel}$color
+#------------------------------------------------------------------------------------------------
+
+${pre_exec feh --bg-center /home/olivier/conky_blue/wallpaper &}
