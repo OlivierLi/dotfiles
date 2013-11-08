@@ -16,16 +16,6 @@ set autoindent
 " Use smart indenting when starting a new line.
 set smartindent
 
-"Deactivate arrows to get used to hjkl
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
-
 "Key remaps
 noremap <Space> <PageDown>
 nnoremap <tab> %
