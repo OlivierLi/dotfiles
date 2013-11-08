@@ -1,10 +1,12 @@
-set nocompatible
+execute pathogen#infect()
+call pathogen#helptags() " generate helptags for everything in 'runtimepath'
 
-filetype plugin on
-filetype indent on
+syntax on
+filetype plugin indent on
 set t_Co=256
 colorscheme ir_black
 
+set nocompatible
 "Indent stuff
 set expandtab
 set tabstop=4
