@@ -8,7 +8,7 @@ if [[ "$TMUX" = "" ]] then
 fi
 
 # This makes cd=pushd
-setopt AUTO_PUSHD
+setopt autopushd pushdminus pushdsilent pushdtohome
 
 #Aliases
 alias "ls"="ls --color=auto"
