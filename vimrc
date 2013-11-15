@@ -4,7 +4,7 @@ call pathogen#helptags() " generate helptags for everything in 'runtimepath'
 syntax on
 filetype plugin indent on
 set t_Co=256
-colorscheme ir_black
+colorscheme wombat
 
 set nocompatible
 "Indent stuff
