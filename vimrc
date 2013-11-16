@@ -1,5 +1,16 @@
-execute pathogen#infect()
-call pathogen#helptags() " generate helptags for everything in 'runtimepath'
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My bundles here:
+" original repos on GitHub
+Bundle 'tpope/vim-surround'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'ervandew/supertab'
+Bundle 'Raimondi/delimitMate'
 
 syntax on
 filetype plugin indent on
