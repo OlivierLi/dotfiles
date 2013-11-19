@@ -11,14 +11,6 @@ Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'ervandew/supertab'
 Bundle 'Raimondi/delimitMate'
-Bundle 'vim-scripts/taglist.vim'
-
-"taglist stuff
-let Tlist_WinWidth = 50
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_Use_Right_Window = 1
-autocmd VimEnter * TlistOpen
-autocmd VimEnter * wincmd p
 
 syntax on
 filetype plugin indent on
