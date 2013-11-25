@@ -1,9 +1,0 @@
-[user]
-	email = OlivierLiDupuis@gmail.com
-	name = olivier
-[push]
-	default = simple
-[core]
-	editor = vim
-[merge]
-	tool = kdiff3
