@@ -1,11 +1,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Autoload tmux if we aren't in it.
-if [[ "$TMUX" = "" ]] then 
-    TERM=xterm-256color;
-    tmux attach;
-fi
+zstyle ':omz:module:tmux' auto-start 'yes'
 
 # This makes cd=pushd
 setopt autopushd pushdminus pushdsilent pushdtohome
