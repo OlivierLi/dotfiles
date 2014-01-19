@@ -4,7 +4,7 @@
 # Autoload tmux if we aren't in it.
 if [[ "$TMUX" = "" ]] then 
     TERM=xterm-256color;
-    tmux;
+    tmux attach;
 fi
 
 # This makes cd=pushd
