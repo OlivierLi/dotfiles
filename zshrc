@@ -1,8 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-zstyle ':omz:module:tmux' auto-start 'yes'
-
 # This makes cd=pushd
 setopt autopushd pushdminus pushdsilent pushdtohome
 
