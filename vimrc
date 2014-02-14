@@ -57,13 +57,13 @@ noremap <F8> :call HexMe()<CR>
 
 let $in_hex=0
 function HexMe()
-set binary
-set noeol
+    set binary
+    set noeol
 if $in_hex>0
-:%!xxd -r
-let $in_hex=0
+    :%!xxd -r
+    let $in_hex=0
 else
-:%!xxd
-let $in_hex=1
+    :%!xxd
+    let $in_hex=1
 endif
 endfunction
