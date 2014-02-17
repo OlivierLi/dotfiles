@@ -10,7 +10,7 @@ alias "ll"="ls -lrt"
 alias "up"="sudo apt-get update && sudo apt-get upgrade"
 alias "install"="sudo apt-get install"
 alias "history"="history 1"
-alias "tmux"="TERM=xterm-256color;tmux -2"
+alias "tmux"="TERM=xterm-256color;tmux -2 attach"
 
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
