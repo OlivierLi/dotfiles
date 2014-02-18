@@ -31,6 +31,7 @@ set smartindent
 noremap <Space> <PageDown>
 nnoremap <tab> %
 vnoremap <tab> %
+nnoremap <esc> :noh<return><esc>
 
 "Misc
 set ignorecase
