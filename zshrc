@@ -10,7 +10,9 @@ alias "ll"="ls -lrt"
 alias "up"="sudo apt-get update && sudo apt-get upgrade"
 alias "install"="sudo apt-get install"
 alias "history"="history 1"
-alias "tmux"="TERM=xterm-256color;tmux -2 attach"
+#If no session named default exists start one. If it does exist attach to it.
+# -2 and TERM to fix colors in vim
+alias "tmux"="TERM=xterm-256color;tmux -2 attach -t default || tmux -2  new -s default"
 
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
