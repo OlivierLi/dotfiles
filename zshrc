@@ -9,6 +9,8 @@ alias "ls"="ls --color=auto"
 alias "ll"="ls -lrt"
 alias "up"="sudo apt-get update && sudo apt-get upgrade"
 alias "install"="sudo apt-get install"
+alias "remove"="sudo apt-get install"
+alias "ack"="ack-grep"
 alias "history"="history 1"
 #If no session named default exists start one. If it does exist attach to it.
 # -2 and TERM to fix colors in vim
