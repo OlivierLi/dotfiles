@@ -31,8 +31,6 @@ set smartindent
 noremap <Space> <PageDown>
 nnoremap <tab> %
 vnoremap <tab> %
-"Clear search highlighting every time escape is pressed
-nnoremap <esc> :noh<return><esc>
 
 "Misc
 set ignorecase
