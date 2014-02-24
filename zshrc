@@ -22,6 +22,9 @@ autoload -Uz vcs_info
 # bind special keys according to readline configuration
 eval "$(sed -n 's/^/bindkey /; s/: / /p' /etc/inputrc)" > /dev/null
 
+#disable input pausing/restarting
+stty -ixon
+
 # set zsh in emacs mode
 bindkey -e
 
