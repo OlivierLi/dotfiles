@@ -12,9 +12,13 @@ alias "install"="sudo apt-get install"
 alias "remove"="sudo apt-get install"
 alias "ack"="ack-grep"
 alias "history"="history 1"
+
 #If no session named default exists start one. If it does exist attach to it.
 # -2 and TERM to fix colors in vim
 alias "tmux"="TERM=xterm-256color;tmux -2 attach -t default || tmux -2  new -s default"
+#Start tmux in a new session but sharing the windows of the default session.
+#Usefull to use multiple monitors
+alias "tmux-multi"="TERM=xterm-256color;tmux -2 new-session -t default || tmux -2  new -s default"
 
 autoload -U compinit promptinit colors
 autoload -Uz vcs_info
