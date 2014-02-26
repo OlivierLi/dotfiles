@@ -31,6 +31,9 @@ set smartindent
 noremap <Space> <PageDown>
 nnoremap <tab> %
 vnoremap <tab> %
+"Use more intuitive binding for page-{up,down}
+noremap <C-j> <C-f>
+noremap <C-k> <C-b>
 
 "Misc
 set ignorecase
