@@ -58,6 +58,12 @@ set showcmd
 "Easier hex editing
 noremap <F8> :call HexMe()<CR>
 
+"Use persistent undo
+set undodir=~/.vim/undodir
+set undofile
+set undolevels=1000 "maximum number of changes that can be undone
+set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+
 let $in_hex=0
 function HexMe()
     set binary
