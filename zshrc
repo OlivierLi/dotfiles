@@ -12,6 +12,9 @@ alias "install"="sudo apt-get install"
 alias "remove"="sudo apt-get install"
 alias "ack"="ack-grep"
 alias "history"="history 1"
+alias "redshift-night"="redshift -O 4000 -l 45.133315:-71.819000 -b 0.5"
+alias "redshift-late-night"="redshift -O 3000 -l 45.133315:-71.819000 -b 0.3"
+alias "redshift-day"="redshift -O 5500 -l 45.133315:-71.819000 -b 1.0"
 
 #If no session named default exists start one. If it does exist attach to it.
 # -2 and TERM to fix colors in vim
