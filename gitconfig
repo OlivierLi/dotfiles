@@ -1,0 +1,9 @@
+[user]
+	email = OlivierLiDupuis@gmail.com
+	name = Olivier Li
+[push]
+	default = simple
+[diff]
+	external = /home/olivier/Scripts/diff.py
+[core]
+	autocrlf = input

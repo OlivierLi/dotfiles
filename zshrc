@@ -28,6 +28,8 @@ autoload -Uz vcs_info
 
 # bind special keys according to readline configuration
 eval "$(sed -n 's/^/bindkey /; s/: / /p' /etc/inputrc)" > /dev/null
+#Special bindkeys for TMUX
+bindkey '^R' history-incremental-search-backward
 
 #disable input pausing/restarting
 stty -ixon
