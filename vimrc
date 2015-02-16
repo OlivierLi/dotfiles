@@ -28,7 +28,7 @@ set autoindent
 set smartindent
 
 "Key remaps
-noremap <Space> <PageDown>
+noremap <Space> zz 
 nnoremap <tab> %
 vnoremap <tab> %
 "Use more intuitive binding for page-{up,down}
