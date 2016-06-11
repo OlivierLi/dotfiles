@@ -1,6 +1,3 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 # This makes cd=pushd
 setopt autopushd pushdminus pushdsilent pushdtohome
 
@@ -42,11 +39,6 @@ setopt prompt_subst
 HISTFILE=~/.zsh_history
 HISTSIZE=5000
 SAVEHIST=5000
-
-#Environement variables
-export EDITOR="/usr/bin/vim"
-
-PS1="%(!.${FG_BRIGHT_RED}.${FG_BRIGHT_GREEN})%n@%m${COLOR_RESET}:${FG_BRIGHT_BLUE}%1~${COLOR_RESET}%(!.#.$) "
 
 #Custom auto-completions
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
