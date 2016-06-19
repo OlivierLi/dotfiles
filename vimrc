@@ -31,8 +31,9 @@ set tags=./tags;/
 
 "Key remaps
 noremap <Space> zz 
-nnoremap <tab> %
-vnoremap <tab> %
+nnoremap <tab> :tabnext<CR>
+nnoremap <S-tab> :tabprevious<CR> 
+
 "Use more intuitive binding for page-{up,down}
 noremap <C-j> <C-f>
 noremap <C-k> <C-b>
