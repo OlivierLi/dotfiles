@@ -27,7 +27,7 @@ set autoindent
 " Use smart indenting when starting a new line.
 set smartindent
 
-set tags=./TAGS;/
+set tags=./tags;/
 
 "Key remaps
 noremap <Space> zz 
