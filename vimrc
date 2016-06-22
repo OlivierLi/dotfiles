@@ -9,8 +9,9 @@ Bundle 'gmarik/vundle'
 " original repos on GitHub
 Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'ervandew/supertab'
-Bundle 'Raimondi/delimitMate'
+Bundle 'jiangmiao/auto-pairs'
+
+call vundle#end()
 
 syntax on
 filetype plugin indent on
@@ -20,8 +21,8 @@ colorscheme ir_black
 set nocompatible
 "Indent stuff
 set expandtab
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 " Use indent from current line when starting a new one.
 set autoindent
 " Use smart indenting when starting a new line.
@@ -45,6 +46,7 @@ set ruler
 set nowrap
 set number
 set incsearch
+set backspace=2
 
 " Set to auto read when a file is changed from the outside
 set autoread
