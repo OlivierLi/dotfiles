@@ -16,7 +16,7 @@ call vundle#end()
 syntax on
 filetype plugin indent on
 set t_Co=256
-colorscheme ir_black
+colorscheme wombat
 
 set nocompatible
 "Indent stuff
@@ -32,8 +32,10 @@ set tags=./tags;/
 
 "Key remaps
 noremap <Space> zz 
-nnoremap <tab> :tabnext<CR>
-nnoremap <S-tab> :tabprevious<CR> 
+
+"Tab navigation
+nnoremap <S-tab> :tabnext<CR>
+nnoremap <C-S-tab> :tabprevious<CR> 
 
 "Use more intuitive binding for page-{up,down}
 noremap <C-j> <C-f>
