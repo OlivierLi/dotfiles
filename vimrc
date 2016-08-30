@@ -21,13 +21,14 @@ colorscheme wombat
 set nocompatible
 "Indent stuff
 set expandtab
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 " Use indent from current line when starting a new one.
 set autoindent
 " Use smart indenting when starting a new line.
 set smartindent
 
+" Look for tags starting at the current directory and all the way up to root
 set tags=./tags;/
 
 "Key remaps
@@ -37,9 +38,17 @@ noremap <Space> zz
 nnoremap <S-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR> 
 
-"Use more intuitive binding for page-{up,down}
+"Use more intuitive binding for scrolling
 noremap <C-j> <C-f>
 noremap <C-k> <C-b>
+map <C-L> 20zl " Scroll 20 characters to the right
+map <C-H> 20zh " Scroll 20 characters to the left
+
+"Disable arrows
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
 
 "Misc
 set ignorecase
@@ -64,6 +73,10 @@ set showcmd
 
 "Easier hex editing
 noremap <F8> :call HexMe()<CR>
+
+"Autocomplete like bash
+set wildmenu
+set wildmode=list:longest
 
 "Use persistent undo
 set undodir=~/.vim/undodir
