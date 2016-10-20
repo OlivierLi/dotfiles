@@ -32,7 +32,8 @@ set smartindent
 set tags=./tags;/
 
 "Key remaps
-noremap <Space> zz 
+noremap zk zt
+noremap zj zb
 
 "Tab navigation
 nnoremap <S-tab> :tabnext<CR>
