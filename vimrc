@@ -51,6 +51,10 @@ map <down> <nop>
 map <left> <nop>
 map <right> <nop>
 
+"Split related behavior
+set splitbelow
+set splitright
+
 "Misc
 set ignorecase
 set smartcase
