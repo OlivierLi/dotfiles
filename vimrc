@@ -19,12 +19,17 @@ set t_Co=256
 colorscheme wombat
 
 set nocompatible
+
 "Indent stuff
 set expandtab
 set tabstop=4
 set shiftwidth=4
-" Use indent from current line when starting a new one.
-set autoindent
+
+"Don't treat the hash is a special case when indenting
+set cindent
+set cinkeys-=0#
+set indentkeys-=0#
+
 " Use smart indenting when starting a new line.
 set smartindent
 
