@@ -72,6 +72,7 @@ set smartcase
 set ruler
 set nowrap
 set number
+set relativenumber
 set incsearch
 set backspace=2
 
