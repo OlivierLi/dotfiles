@@ -10,6 +10,12 @@ Bundle 'gmarik/vundle'
 Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'jiangmiao/auto-pairs'
+Bundle 'takac/vim-hardtime'
+
+"Hardtime settings
+let g:hardtime_default_on = 1
+let g:hardtime_allow_different_key = 1
+let g:hardtime_maxcount = 4
 
 call vundle#end()
 
