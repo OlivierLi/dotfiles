@@ -12,12 +12,12 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'takac/vim-hardtime'
 
+call vundle#end()
+
 "Hardtime settings
 let g:hardtime_default_on = 1
 let g:hardtime_allow_different_key = 1
 let g:hardtime_maxcount = 4
-
-call vundle#end()
 
 syntax on
 filetype plugin indent on
