@@ -11,8 +11,28 @@ Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'takac/vim-hardtime'
+Bundle 'lyuts/vim-rtags'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'rdnetto/YCM-Generator'
+Bundle 'scrooloose/nerdtree'
+Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'kien/ctrlp.vim'
 
 call vundle#end()
+
+"Tmux navigator stuff
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-A>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-A>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-A>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
+
+"YCM settings
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -20,6 +40,17 @@ let g:hardtime_allow_different_key = 1
 let g:hardtime_maxcount = 4
 let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
 let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
+
+"Gitgutter stuff
+let g:gitgutter_map_keys = 0
+
+"Nerdtree stuff
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
 
 syntax on
 filetype plugin indent on
@@ -67,6 +98,7 @@ map <right> <nop>
 "Split related behavior
 set splitbelow
 set splitright
+autocmd VimResized * wincmd =
 
 "Misc
 set ignorecase
