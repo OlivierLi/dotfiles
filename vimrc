@@ -28,7 +28,7 @@ nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
 nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 
 "YCM settings
-let g:ycm_confirm_extra_conf = 1
+let g:ycm_confirm_extra_conf = 0
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -77,9 +77,11 @@ noremap zj zb
 nnoremap <S-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR> 
 
-" Horizontal scrolling mappings
-map <leader>l 20zl " Scroll 20 characters to the right
-map <leader>h 20zh " Scroll 20 characters to the left
+"Use more intuitive binding for scrolling
+noremap <C-j> <C-f>
+noremap <C-k> <C-b>
+map <C-L> 20zl " Scroll 20 characters to the right
+map <C-H> 20zh " Scroll 20 characters to the left
 
 "Disable arrows
 map <up> <nop>
@@ -90,6 +92,7 @@ map <right> <nop>
 "Split related behavior
 set splitbelow
 set splitright
+autocmd VimResized * wincmd =
 
 "Misc
 set ignorecase
