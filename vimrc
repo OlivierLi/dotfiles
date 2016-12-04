@@ -16,8 +16,12 @@ Bundle 'Valloric/YouCompleteMe'
 Bundle 'rdnetto/YCM-Generator'
 Bundle 'scrooloose/nerdtree'
 Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'kien/ctrlp.vim'
 
 call vundle#end()
+
+"ctrlp stuff
+nnoremap <Space> :CtrlPTag<cr>
 
 "Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
@@ -29,6 +33,9 @@ nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 
 "YCM settings
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
 
 "Hardtime settings
 let g:hardtime_default_on = 1
