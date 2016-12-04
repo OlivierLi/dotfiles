@@ -18,6 +18,8 @@ call vundle#end()
 let g:hardtime_default_on = 1
 let g:hardtime_allow_different_key = 1
 let g:hardtime_maxcount = 4
+let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
+let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
 
 syntax on
 filetype plugin indent on
