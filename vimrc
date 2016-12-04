@@ -20,9 +20,6 @@ Bundle 'kien/ctrlp.vim'
 
 call vundle#end()
 
-"ctrlp stuff
-nnoremap <Space> :CtrlPTag<cr>
-
 "Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-A>h :TmuxNavigateLeft<cr>
