@@ -11,13 +11,40 @@ Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
 Bundle 'jiangmiao/auto-pairs'
 Bundle 'takac/vim-hardtime'
+Bundle 'lyuts/vim-rtags'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'rdnetto/YCM-Generator'
+Bundle 'scrooloose/nerdtree'
+Bundle 'christoomey/vim-tmux-navigator'
 
 call vundle#end()
+
+"Tmux navigator stuff
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-A>h :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-A>j :TmuxNavigateDown<cr>
+nnoremap <silent> <C-A>k :TmuxNavigateUp<cr>
+nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
+
+"YCM settings
+let g:ycm_confirm_extra_conf = 1
 
 "Hardtime settings
 let g:hardtime_default_on = 1
 let g:hardtime_allow_different_key = 1
 let g:hardtime_maxcount = 4
+
+"Gitgutter stuff
+let g:gitgutter_map_keys = 0
+
+"Nerdtree stuff
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
 
 syntax on
 filetype plugin indent on
@@ -50,11 +77,9 @@ noremap zj zb
 nnoremap <S-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR> 
 
-"Use more intuitive binding for scrolling
-noremap <C-j> <C-f>
-noremap <C-k> <C-b>
-map <C-L> 20zl " Scroll 20 characters to the right
-map <C-H> 20zh " Scroll 20 characters to the left
+" Horizontal scrolling mappings
+map <leader>l 20zl " Scroll 20 characters to the right
+map <leader>h 20zh " Scroll 20 characters to the left
 
 "Disable arrows
 map <up> <nop>
