@@ -17,8 +17,15 @@ Bundle 'rdnetto/YCM-Generator'
 Bundle 'scrooloose/nerdtree'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'kien/ctrlp.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Bundle 'tpope/vim-fugitive'
 
 call vundle#end()
+
+"Airline stuff
+set laststatus=2
+:let g:airline_theme='understated'
 
 "Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
