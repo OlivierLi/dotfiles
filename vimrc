@@ -20,10 +20,12 @@ Bundle 'kien/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive'
+Plugin 'mileszs/ack.vim'
 
 call vundle#end()
 
 "Airline stuff
+set noshowmode
 set laststatus=2
 :let g:airline_theme='understated'
 
@@ -54,10 +56,9 @@ let g:gitgutter_map_keys = 0
 "Nerdtree stuff
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 syntax on
 filetype plugin indent on
@@ -135,6 +136,12 @@ noremap <F8> :call HexMe()<CR>
 "Autocomplete like bash
 set wildmenu
 set wildmode=list:longest
+
+"Autoclose QuickFix window if it's the last window
+aug QFClose
+    au!
+    au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
 
 "Use persistent undo
 set undodir=~/.vim/undodir
