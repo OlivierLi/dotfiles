@@ -42,6 +42,9 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+"Ack stuff
+"Don't open the first result automatically
+cabbrev Ack Ack!
 
 "Hardtime settings
 let g:hardtime_default_on = 1
