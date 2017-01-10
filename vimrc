@@ -20,6 +20,7 @@ Bundle 'tpope/vim-fugitive'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'vim-signature'
+Plugin 'junegunn/vim-peekaboo'
 
 call vundle#end()
 
@@ -87,6 +88,9 @@ set smartindent
 
 " Look for tags starting at the current directory and all the way up to root
 set tags=./tags;/
+
+" Don't add the comment prefix when I hit enter or o/O on a comment line.
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Key remaps
 noremap zk zt
