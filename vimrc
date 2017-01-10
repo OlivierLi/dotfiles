@@ -89,6 +89,7 @@ set tags=./tags;/
 "Key remaps
 noremap zk zt
 noremap zj zb
+nnoremap Q <nop>
 
 "Tab navigation
 nnoremap <S-tab> :tabnext<CR>
