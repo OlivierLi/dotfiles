@@ -7,13 +7,10 @@ Bundle 'gmarik/vundle'
 
 " My bundles here:
 " original repos on GitHub
-Bundle 'tpope/vim-surround'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'jiangmiao/auto-pairs'
 Bundle 'takac/vim-hardtime'
 Bundle 'lyuts/vim-rtags'
 Bundle 'Valloric/YouCompleteMe'
-Bundle 'rdnetto/YCM-Generator'
 Bundle 'scrooloose/nerdtree'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'kien/ctrlp.vim'
@@ -22,6 +19,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive'
 Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-dispatch'
+Plugin 'vim-signature'
 
 call vundle#end()
 
@@ -125,6 +123,9 @@ set number
 set relativenumber
 set incsearch
 set backspace=2
+
+"Disabble X clipboard for faster boot
+set clipboard=exclude:.*
 
 " Set to auto read when a file is changed from the outside
 set autoread
