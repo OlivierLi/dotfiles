@@ -21,6 +21,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive'
 Plugin 'mileszs/ack.vim'
+Plugin 'tpope/vim-dispatch'
 
 call vundle#end()
 
@@ -52,6 +53,9 @@ let g:hardtime_allow_different_key = 1
 let g:hardtime_maxcount = 4
 let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
 let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
+
+"Rtags stuff
+let g:rtagsUseLocationList = 0
 
 "Gitgutter stuff
 let g:gitgutter_map_keys = 0
