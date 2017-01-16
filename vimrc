@@ -21,6 +21,7 @@ Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'vim-signature'
 Plugin 'junegunn/vim-peekaboo'
+Plugin 'Valloric/ListToggle'
 
 call vundle#end()
 
@@ -56,8 +57,18 @@ let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<L
 "Rtags stuff
 let g:rtagsUseLocationList = 0
 
+" Always have quickfix take the entire bottom of the screen
+au FileType qf wincmd J
+
+" peekaboo stuff 
+let g:peekaboo_prefix = '<leader>'
+
 "Gitgutter stuff
 let g:gitgutter_map_keys = 0
+nmap <Leader>hn <Plug>GitGutterNextHunk<cr>
+nmap <Leader>hp <Plug>GitGutterPrevHunk<cr>
+nmap <Leader>hu <Plug>GitGutterUndoHunk<cr>
+nmap <Leader>hs <Plug>GitGutterStageHunk<cr>
 
 "Nerdtree stuff
 autocmd StdinReadPre * let s:std_in=1
@@ -67,6 +78,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 noremap <Leader>t :NERDTreeToggle<cr>
 noremap <Leader>o :NERDTreeFind<cr>
+let NERDTreeMapHelp='<f1>'
 
 syntax on
 filetype plugin indent on
