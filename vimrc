@@ -1,29 +1,22 @@
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
-
+call plug#begin('~/.vim/plugged')
 " My bundles here:
 " original repos on GitHub
-Bundle 'airblade/vim-gitgutter'
-Bundle 'takac/vim-hardtime'
-Bundle 'lyuts/vim-rtags'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'scrooloose/nerdtree'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'kien/ctrlp.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Bundle 'tpope/vim-fugitive'
-Plugin 'mileszs/ack.vim'
-Plugin 'tpope/vim-dispatch'
-Plugin 'vim-signature'
-Plugin 'junegunn/vim-peekaboo'
-Plugin 'Valloric/ListToggle'
-
-call vundle#end()
+Plug 'airblade/vim-gitgutter'
+Plug 'takac/vim-hardtime'
+Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+Plug 'scrooloose/nerdtree'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'vim-signature'
+Plug 'junegunn/vim-peekaboo'
+Plug 'Valloric/ListToggle'
+call plug#end()
 
 "Airline stuff
 set noshowmode
@@ -42,6 +35,10 @@ nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
+
+"Only applicable when vim-rtags not loaded
+nnoremap <leader>rj :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Ack stuff
 "Don't open the first result automatically
@@ -81,7 +78,6 @@ noremap <Leader>o :NERDTreeFind<cr>
 let NERDTreeMapHelp='<f1>'
 
 syntax on
-filetype plugin indent on
 set t_Co=256
 colorscheme wombat
 
@@ -110,6 +106,9 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 noremap zk zt
 noremap zj zb
 nnoremap Q <nop>
+
+"Produce the oposite effect from J
+nnoremap K i<CR><Esc>
 
 "Tab navigation
 nnoremap <S-tab> :tabnext<CR>
