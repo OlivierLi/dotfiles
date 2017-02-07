@@ -4,7 +4,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
 Plug 'takac/vim-hardtime'
 Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
 Plug 'scrooloose/nerdtree'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'kien/ctrlp.vim'
@@ -39,6 +39,10 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 "Only applicable when vim-rtags not loaded
 nnoremap <leader>rj :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
+
+"Make stuff
+nnoremap <leader>b :Make<CR>
+set autowrite
 
 "Ack stuff
 "Don't open the first result automatically
@@ -187,3 +191,23 @@ else
     let $in_hex=1
 endif
 endfunction
+
+"Find out how many cores to use for make
+function! SetMakeprg()
+    if filereadable('/proc/cpuinfo')
+        " this works on most Linux systems
+        let n = system('grep -c ^processor /proc/cpuinfo') + 0
+    else
+        " default to single process if we can't figure it out automatically
+        let n = 1
+    endif
+    
+    " Don't go overboard on shared boxes
+    if n > 8
+        let n = 11
+    endif
+
+    let &makeprg = 'make' . (n > 1 ? (' -j'.(n + 1)) : '')
+endfunction
+call SetMakeprg()
+
