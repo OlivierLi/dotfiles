@@ -42,11 +42,15 @@ nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Make stuff
 nnoremap <leader>b :Make<CR>
+cabbrev make Make 
 set autowrite
+
+"Dispatch stuff
+nnoremap <leader>d :Dispatch<CR>
 
 "Ack stuff
 "Don't open the first result automatically
-cabbrev Ack Ack!
+cabbrev ack Ack!
 
 "Hardtime settings
 let g:hardtime_default_on = 1
