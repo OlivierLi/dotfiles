@@ -1,20 +1,24 @@
 call plug#begin('~/.vim/plugged')
 " My bundles here:
 " original repos on GitHub
-Plug 'airblade/vim-gitgutter'
+
+if !&diff
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
+    Plug 'scrooloose/nerdtree'
+    Plug 'kien/ctrlp.vim'
+    Plug 'junegunn/vim-peekaboo'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'mileszs/ack.vim'
+endif
+
 Plug 'takac/vim-hardtime'
 Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
-Plug 'scrooloose/nerdtree'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'kien/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
-Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-dispatch'
 Plug 'vim-signature'
-Plug 'junegunn/vim-peekaboo'
 Plug 'Valloric/ListToggle'
 call plug#end()
 
@@ -122,6 +126,9 @@ nnoremap K i<CR><Esc>
 nnoremap <S-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR> 
 
+" Quit everything!
+noremap <C-q> :qa!<CR>
+
 "Use more intuitive binding for scrolling
 noremap <C-j> <C-f>
 noremap <C-k> <C-b>
@@ -217,3 +224,13 @@ call SetMakeprg()
 
 " Additional color settings specifically for diff
 highlight DiffText   cterm=bold ctermfg=7 ctermbg=56
+
+" Used to collapse all blocks in a vimdiff
+function CollapseAllBlocks()
+    " Only search the unfolded areas
+    set diffopt=filler,context:0
+    set fdo-=search
+endfunction
+noremap <C-c> :call CollapseAllBlocks()<CR>
+
+"TODO : Specialize the collpase function to handle non-diff mode
