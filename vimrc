@@ -11,6 +11,7 @@ if !&diff
     Plug 'mileszs/ack.vim'
 endif
 
+Plug 'scrooloose/nerdcommenter'
 Plug 'takac/vim-hardtime'
 Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
 Plug 'christoomey/vim-tmux-navigator'
@@ -18,8 +19,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
-Plug 'vim-signature'
+Plug 'kshenoy/vim-signature'
 Plug 'Valloric/ListToggle'
+Plug 'junegunn/vim-peekaboo'
 call plug#end()
 
 "Airline stuff
@@ -74,10 +76,10 @@ let g:peekaboo_prefix = '<leader>'
 
 "Gitgutter stuff
 let g:gitgutter_map_keys = 0
-nmap <Leader>hn <Plug>GitGutterNextHunk<cr>
-nmap <Leader>hp <Plug>GitGutterPrevHunk<cr>
-nmap <Leader>hu <Plug>GitGutterUndoHunk<cr>
-nmap <Leader>hs <Plug>GitGutterStageHunk<cr>
+nmap <Leader>hn  :GitGutterNextHunk<cr>
+nmap <Leader>hp  :GitGutterPrevHunk<cr>
+nmap <Leader>hu  :GitGutterUndoHunk<cr>
+nmap <Leader>hs  :GitGutterStageHunk<cr>
 
 "Nerdtree stuff
 autocmd StdinReadPre * let s:std_in=1
