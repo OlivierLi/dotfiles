@@ -11,6 +11,8 @@ if !&diff
     Plug 'mileszs/ack.vim'
 endif
 
+Plug 'sjl/gundo.vim'
+Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'scrooloose/nerdcommenter'
 Plug 'takac/vim-hardtime'
 Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
@@ -46,6 +48,9 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 nnoremap <leader>rj :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
+"Gundo stuff
+noremap <Leader>g :GundoToggle<cr>
+
 "Make stuff
 nnoremap <leader>b :Make<CR>
 cabbrev make Make 
@@ -57,12 +62,15 @@ nnoremap <leader>d :Dispatch<CR>
 "Ack stuff
 "Don't open the first result automatically
 cabbrev ack Ack!
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 "Hardtime settings
 let g:hardtime_default_on = 1
-let g:hardtime_allow_different_key = 1
-let g:hardtime_maxcount = 4
-let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
+let g:hardtime_allow_different_key = 0
+let g:hardtime_maxcount = 8
+let g:list_of_normal_keys = ["x", "h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
 let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
 
 "Rtags stuff
@@ -81,15 +89,18 @@ nmap <Leader>hp  :GitGutterPrevHunk<cr>
 nmap <Leader>hu  :GitGutterUndoHunk<cr>
 nmap <Leader>hs  :GitGutterStageHunk<cr>
 
-"Nerdtree stuff
+" Open nerdtree on empty dirs and don't let it be the last window
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+"Nerdtree stuff
 noremap <Leader>t :NERDTreeToggle<cr>
 noremap <Leader>o :NERDTreeFind<cr>
 let NERDTreeMapHelp='<f1>'
+let NERDTreeMapQuit =''
 
 syntax on
 set t_Co=256
@@ -125,8 +136,8 @@ nnoremap Q <nop>
 nnoremap K i<CR><Esc>
 
 "Tab navigation
-nnoremap <S-tab> :tabnext<CR>
-nnoremap <C-S-tab> :tabprevious<CR> 
+nnoremap <tab> :tabnext<CR>
+nnoremap <S-tab> :tabprevious<CR> 
 
 " Quit everything!
 noremap <C-q> :qa!<CR>
