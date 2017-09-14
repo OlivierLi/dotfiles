@@ -43,6 +43,7 @@ hi Label guifg=#cae682 guibg=NONE guisp=NONE gui=NONE ctermfg=150 ctermbg=NONE c
 "hi CTagsImport -- no settings --
 hi PMenuSel guifg=#000000 guibg=#cae682 guisp=#cae682 gui=NONE ctermfg=NONE ctermbg=150 cterm=NONE
 "hi Search -- no settings --
+hi QuickFixLine cterm=None ctermfg=0 ctermbg=222 guibg=#efdb9c
 "hi CTagsGlobalVariable -- no settings --
 hi Delimiter guifg=#e7f6da guibg=NONE guisp=NONE gui=NONE ctermfg=194 ctermbg=NONE cterm=NONE
 hi Statement guifg=#8ac6f2 guibg=NONE guisp=NONE gui=NONE ctermfg=117 ctermbg=NONE cterm=NONE

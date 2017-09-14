@@ -21,9 +21,12 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
+Plug 'chrisbra/csv.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'Valloric/ListToggle'
 Plug 'junegunn/vim-peekaboo'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'rhysd/vim-clang-format'
 call plug#end()
 
 "Airline stuff
@@ -43,6 +46,8 @@ nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_enable_diagnostic_highlighting = 0
 
 "Only applicable when vim-rtags not loaded
 nnoremap <leader>rj :YcmCompleter GoToDefinition<CR>
@@ -50,6 +55,9 @@ nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Gundo stuff
 noremap <Leader>g :GundoToggle<cr>
+if has('python3')
+    let g:gundo_prefer_python3 = 1          " anything else breaks on Ubuntu 16.04+
+endif
 
 "Make stuff
 nnoremap <leader>b :Make<CR>
@@ -70,8 +78,8 @@ endif
 let g:hardtime_default_on = 1
 let g:hardtime_allow_different_key = 0
 let g:hardtime_maxcount = 8
-let g:list_of_normal_keys = ["x", "h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
-let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>", "w", "W", "b", "B"]
+let g:list_of_normal_keys = ['x', 'h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<LEFT>', '<RIGHT>', 'w', 'W', 'b', 'B']
+let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<LEFT>', '<RIGHT>', 'w', 'W', 'b', 'B']
 
 "Rtags stuff
 let g:rtagsUseLocationList = 0
@@ -105,8 +113,6 @@ let NERDTreeMapQuit =''
 syntax on
 set t_Co=256
 colorscheme wombat
-
-set nocompatible
 
 "Indent stuff
 set expandtab
