@@ -84,8 +84,11 @@ let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<L
 "Rtags stuff
 let g:rtagsUseLocationList = 0
 
+" quickfix stuff
 " Always have quickfix take the entire bottom of the screen
 au FileType qf wincmd J
+nmap <Leader>Q  :colder<cr>
+nmap <Leader>W  :cnewer<cr>
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
@@ -107,8 +110,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "Nerdtree stuff
 noremap <Leader>t :NERDTreeToggle<cr>
 noremap <Leader>o :NERDTreeFind<cr>
-let NERDTreeMapHelp='<f1>'
-let NERDTreeMapQuit =''
+let g:NERDTreeMapJumpNextSibling = '<Nop>'
+let g:NERDTreeMapJumpPrevSibling = '<Nop>'
+let g:NERDTreeMapHelp='<f1>'
+let g:NERDTreeMapQuit =''
 
 syntax on
 set t_Co=256
@@ -137,6 +142,8 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 noremap zk zt
 noremap zj zb
 nnoremap Q <nop>
+nnoremap n nzz
+nnoremap N Nzz
 
 "Produce the oposite effect from J
 nnoremap K i<CR><Esc>
@@ -182,7 +189,7 @@ set clipboard=exclude:.*
 set autoread
 
 " Use Unix as the standard file type
-set ffs=unix,dos,mac
+set fileformats=unix,dos,mac
 
 "Toggle auto-indenting for code paste
 set pastetoggle=<F2>
@@ -196,6 +203,14 @@ noremap <F8> :call HexMe()<CR>
 "Autocomplete like bash
 set wildmenu
 set wildmode=list:longest
+
+"Also save with capital W
+command W w
+command Wq wq
+command WQ wq
+command Q q
+command Qa qa
+command QA qa
 
 "Autoclose QuickFix window if it's the last window
 aug QFClose
@@ -212,7 +227,7 @@ set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 let $in_hex=0
 function HexMe()
     set binary
-    set noeol
+    set noendofline
 if $in_hex>0
     :%!xxd -r
     let $in_hex=0
@@ -226,18 +241,18 @@ endfunction
 function! SetMakeprg()
     if filereadable('/proc/cpuinfo')
         " this works on most Linux systems
-        let n = system('grep -c ^processor /proc/cpuinfo') + 0
+        let l:n = system('grep -c ^processor /proc/cpuinfo') + 0
     else
         " default to single process if we can't figure it out automatically
-        let n = 1
+        let l:n = 1
     endif
     
     " Don't go overboard on shared boxes
-    if n > 8
-        let n = 11
+    if l:n > 8
+        let l:n = 11
     endif
 
-    let &makeprg = 'make' . (n > 1 ? (' -j'.(n + 1)) : '')
+    let &makeprg = 'make' . (l:n > 1 ? (' -j'.(l:n + 1)) : '')
 endfunction
 call SetMakeprg()
 
@@ -248,7 +263,7 @@ highlight DiffText   cterm=bold ctermfg=7 ctermbg=56
 function CollapseAllBlocks()
     " Only search the unfolded areas
     set diffopt=filler,context:0
-    set fdo-=search
+    set foldopen-=search
 endfunction
 noremap <C-c> :call CollapseAllBlocks()<CR>
 
