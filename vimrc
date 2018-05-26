@@ -21,6 +21,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'chrisbra/csv.vim'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
+Plug 'junegunn/vim-peekaboo'
 Plug 'rhysd/vim-clang-format'
 call plug#end()
 
