@@ -1,6 +1,4 @@
 call plug#begin('~/.vim/plugged')
-" My bundles here:
-" original repos on GitHub
 
 if !&diff
     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
@@ -11,6 +9,7 @@ if !&diff
     Plug 'mileszs/ack.vim'
 endif
 
+Plug 'skywind3000/asyncrun.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'scrooloose/nerdcommenter'
@@ -20,12 +19,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
 Plug 'chrisbra/csv.vim'
-Plug 'kshenoy/vim-signature'
-Plug 'Valloric/ListToggle'
-Plug 'junegunn/vim-peekaboo'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'kshenoy/vim-signature' " Handle markers in the gutter
 Plug 'rhysd/vim-clang-format'
 call plug#end()
 
@@ -50,7 +45,7 @@ let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 
 "Only applicable when vim-rtags not loaded
-nnoremap <leader>rj :YcmCompleter GoToDefinition<CR>
+nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Gundo stuff
@@ -60,12 +55,8 @@ if has('python3')
 endif
 
 "Make stuff
-nnoremap <leader>b :Make<CR>
-cabbrev make Make 
+nnoremap <leader>b :AsyncRun -program=make @<CR>
 set autowrite
-
-"Dispatch stuff
-nnoremap <leader>d :Dispatch<CR>
 
 "Ack stuff
 "Don't open the first result automatically
@@ -83,12 +74,21 @@ let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<L
 
 "Rtags stuff
 let g:rtagsUseLocationList = 0
+nnoremap <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 
 " quickfix stuff
 " Always have quickfix take the entire bottom of the screen
 au FileType qf wincmd J
+nmap <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
 nmap <Leader>Q  :colder<cr>
 nmap <Leader>W  :cnewer<cr>
+" The quickfix window will open when an async job finishes.
+augroup vimrc
+autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
+augroup END
+" Navigate the results without losing focus
+noremap <C-j> :cnext<cr>
+noremap <C-k> :cprevious<cr>
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
@@ -156,8 +156,6 @@ nnoremap <S-tab> :tabprevious<CR>
 noremap <C-q> :qa!<CR>
 
 "Use more intuitive binding for scrolling
-noremap <C-j> <C-f>
-noremap <C-k> <C-b>
 map <C-L> 20zl " Scroll 20 characters to the right
 map <C-H> 20zh " Scroll 20 characters to the left
 
@@ -223,19 +221,6 @@ set undodir=~/.vim/undodir
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
-
-let $in_hex=0
-function HexMe()
-    set binary
-    set noendofline
-if $in_hex>0
-    :%!xxd -r
-    let $in_hex=0
-else
-    :%!xxd
-    let $in_hex=1
-endif
-endfunction
 
 "Find out how many cores to use for make
 function! SetMakeprg()
