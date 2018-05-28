@@ -80,6 +80,7 @@ nnoremap <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 " quickfix stuff
 " Always have quickfix take the entire bottom of the screen
 au FileType qf wincmd J
+" quickfix related remaps
 nmap <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
 nmap <Leader>Q  :colder<cr>
 nmap <Leader>W  :cnewer<cr>
@@ -88,8 +89,8 @@ augroup vimrc
 autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
 augroup END
 " Navigate the results without losing focus
-noremap <C-j> :cnext<cr>
-noremap <C-k> :cprevious<cr>
+noremap <C-j> :cnext<cr>zz
+noremap <C-k> :cprevious<cr>zz
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
