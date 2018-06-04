@@ -3,10 +3,8 @@ call plug#begin('~/.vim/plugged')
 if !&diff
     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
     Plug 'scrooloose/nerdtree'
-    Plug 'kien/ctrlp.vim'
     Plug 'junegunn/vim-peekaboo'
     Plug 'airblade/vim-gitgutter'
-    Plug 'mileszs/ack.vim'
 endif
 
 Plug 'skywind3000/asyncrun.vim'
@@ -19,10 +17,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
-Plug 'chrisbra/csv.vim'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
-Plug 'junegunn/vim-peekaboo'
 Plug 'rhysd/vim-clang-format'
+Plug 'romainl/vim-qf'
 call plug#end()
 
 "Airline stuff
@@ -59,12 +56,8 @@ endif
 nnoremap <leader>b :AsyncRun -program=make @<CR>
 set autowrite
 
-"Ack stuff
-"Don't open the first result automatically
-cabbrev ack Ack!
-if executable('ag')
-    let g:ackprg = 'ag --vimgrep'
-endif
+" Commands abbreviations
+cabbrev ack AsyncRun ack -s -H --nopager --nocolor --nogroup --column
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -107,7 +100,7 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
 "Nerdtree stuff
 noremap <Leader>t :NERDTreeToggle<cr>
@@ -212,12 +205,6 @@ command Q q
 command Qa qa
 command QA qa
 
-"Autoclose QuickFix window if it's the last window
-aug QFClose
-    au!
-    au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
-aug END
-
 "Use persistent undo
 set undodir=~/.vim/undodir
 set undofile
@@ -234,11 +221,6 @@ function! SetMakeprg()
         let l:n = 1
     endif
     
-    " Don't go overboard on shared boxes
-    if l:n > 8
-        let l:n = 11
-    endif
-
     let &makeprg = 'make' . (l:n > 1 ? (' -j'.(l:n + 1)) : '')
 endfunction
 call SetMakeprg()
@@ -255,3 +237,4 @@ endfunction
 noremap <C-c> :call CollapseAllBlocks()<CR>
 
 "TODO : Specialize the collpase function to handle non-diff mode
+"TODO : When nerdtree opens
