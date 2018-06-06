@@ -22,6 +22,36 @@ Plug 'rhysd/vim-clang-format'
 Plug 'romainl/vim-qf'
 call plug#end()
 
+"Functions======================================================================
+
+function! GetNextValid()
+    let i = 1
+    while i <= winnr("$") " Iterate until the number of the last window
+        let bnum = winbufnr(i) " Get the buffer number associated with window
+        if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
+                    \ && (!getbufvar(bnum, '&modified') || &hidden)
+                    \ && getbufvar(bnum, "&buftype") != "quickfix"
+                    \ && !getwinvar(i, '&previewwindow')
+            return i
+        endif
+
+        let i += 1
+    endwhile
+    return -1
+endfunction
+
+" Jump to the next valid window, prioritize the previous window
+" TODO: prioritize the previous window 
+" TODO: Open a new split next to nerdtree if no valid window?
+function! GoToNextValid()
+    let l:i = GetNextValid()
+    if l:i != -1
+        exec(l:i. 'wincmd w')
+    endif
+endfunction
+
+"===============================================================================
+
 "Airline stuff
 set noshowmode
 set laststatus=2
@@ -68,15 +98,15 @@ let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<L
 
 "Rtags stuff
 let g:rtagsUseLocationList = 0
-nnoremap <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
+nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 
 " quickfix stuff
 " Always have quickfix take the entire bottom of the screen
 au FileType qf wincmd J
 " quickfix related remaps
-nmap <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
-nmap <Leader>Q  :colder<cr>
-nmap <Leader>W  :cnewer<cr>
+nmap <silent> <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
+nmap <silent> <Leader>Q :colder<cr>
+nmap <silent> <Leader>W :cnewer<cr>
 " The quickfix window will open when an async job finishes.
 augroup vimrc
 autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
@@ -84,6 +114,9 @@ augroup END
 " Navigate the results without losing focus
 noremap <C-j> :cnext<cr>zz
 noremap <C-k> :cprevious<cr>zz
+
+" Always move to a valid window before calling a command
+noremap <silent> : :call GoToNextValid()<cr>:
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
@@ -108,7 +141,7 @@ noremap <Leader>o :NERDTreeFind<cr>
 let g:NERDTreeMapJumpNextSibling = '<Nop>'
 let g:NERDTreeMapJumpPrevSibling = '<Nop>'
 let g:NERDTreeMapHelp='<f1>'
-let g:NERDTreeMapQuit =''
+let g:NERDTreeMapQuit ='<Nop>'
 
 syntax on
 set t_Co=256
@@ -190,9 +223,6 @@ set pastetoggle=<F2>
 "Display incomplete commands
 set showcmd
 
-"Easier hex editing
-noremap <F8> :call HexMe()<CR>
-
 "Autocomplete like bash
 set wildmenu
 set wildmode=list:longest
@@ -234,7 +264,7 @@ function CollapseAllBlocks()
     set diffopt=filler,context:0
     set foldopen-=search
 endfunction
-noremap <C-c> :call CollapseAllBlocks()<CR>
+noremap <silent> <C-c> :call CollapseAllBlocks()<CR>
 
 "TODO : Specialize the collpase function to handle non-diff mode
 "TODO : When nerdtree opens
