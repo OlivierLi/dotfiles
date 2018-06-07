@@ -24,15 +24,22 @@ call plug#end()
 
 "Functions======================================================================
 
+function! IsWinValid(win_num)
+    let bnum = winbufnr(a:win_num) " Get the buffer number associated with window
+    if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
+                "\ && (!getbufvar(bnum, '&modified') || &hidden)
+                \ && getbufvar(bnum, "&buftype") != "quickfix"
+                \ && !getwinvar(a:win_num, '&previewwindow')
+            return 1
+    endif
+    return 0
+endfunction
+
 function! GetNextValid()
     let i = 1
     while i <= winnr("$") " Iterate until the number of the last window
-        let bnum = winbufnr(i) " Get the buffer number associated with window
-        if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
-                    \ && (!getbufvar(bnum, '&modified') || &hidden)
-                    \ && getbufvar(bnum, "&buftype") != "quickfix"
-                    \ && !getwinvar(i, '&previewwindow')
-            return i
+        if IsWinValid(l:i)
+            return l:i
         endif
 
         let i += 1
@@ -41,9 +48,20 @@ function! GetNextValid()
 endfunction
 
 " Jump to the next valid window, prioritize the previous window
-" TODO: prioritize the previous window 
-" TODO: Open a new split next to nerdtree if no valid window?
-function! GoToNextValid()
+function! GoToFirstValid()
+
+    " If in a valid window do nothing
+    if IsWinValid(winnr())
+        return
+    endif
+
+    " If the previous window was valid prioritize it
+    let last_index = winnr("#")
+    if IsWinValid(l:last_index)
+        exec(l:last_index. 'wincmd w')
+        return
+    endif
+
     let l:i = GetNextValid()
     if l:i != -1
         exec(l:i. 'wincmd w')
@@ -116,7 +134,7 @@ noremap <C-j> :cnext<cr>zz
 noremap <C-k> :cprevious<cr>zz
 
 " Always move to a valid window before calling a command
-noremap <silent> : :call GoToNextValid()<cr>:
+noremap : :call GoToFirstValid()<cr>:
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
