@@ -19,15 +19,45 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
 Plug 'rhysd/vim-clang-format'
-Plug 'romainl/vim-qf'
 call plug#end()
+
+"Variables======================================================================
+
+let g:goToFirst=1 " Controls whether <C-j> should take you to the first or next result
+
+"Autocmds=======================================================================
+
+augroup vimrc
+
+    " Always have quickfix take the entire bottom of the screen
+    au FileType qf wincmd J
+
+    " The quickfix window will open when an async job finishes.
+    autocmd User AsyncRunStart call BeforeAsynCommand()
+    
+    " Remove the useless item for quickfix list
+    autocmd User AsyncRunStop  call AfterAsyncCommand()
+
+    " Don't add the comment prefix when I hit enter or o/O on a comment line.
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    
+    " The vimsplits should stay proportional through resizes
+    autocmd VimResized * wincmd =
+
+    " Open nerdtree on empty dirs and don't let it be the last window
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
+
+augroup END
 
 "Functions======================================================================
 
 function! IsWinValid(win_num)
     let bnum = winbufnr(a:win_num) " Get the buffer number associated with window
     if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
-                "\ && (!getbufvar(bnum, '&modified') || &hidden)
                 \ && getbufvar(bnum, "&buftype") != "quickfix"
                 \ && !getwinvar(a:win_num, '&previewwindow')
             return 1
@@ -37,7 +67,7 @@ endfunction
 
 function! GetNextValid()
     let i = 1
-    while i <= winnr("$") " Iterate until the number of the last window
+    while i <= winnr('$') " Iterate until the number of the last window
         if IsWinValid(l:i)
             return l:i
         endif
@@ -56,7 +86,7 @@ function! GoToFirstValid()
     endif
 
     " If the previous window was valid prioritize it
-    let last_index = winnr("#")
+    let last_index = winnr('#')
     if IsWinValid(l:last_index)
         exec(l:last_index. 'wincmd w')
         return
@@ -68,7 +98,34 @@ function! GoToFirstValid()
     endif
 endfunction
 
-"===============================================================================
+function! Pop(l, i)
+    let new_list = deepcopy(a:l)
+    call remove(new_list, a:i)
+    return new_list
+endfunction
+
+function! BeforeAsynCommand()
+    " We have new content in the quickFix. We whould start from the beginning
+    let g:goToFirst=1
+    call asyncrun#quickfix_toggle(8, 1)
+endfunction
+
+function! AfterAsyncCommand()
+    " Remove the first entry which is just a print of the command
+    call setqflist(Pop(getqflist(),0))
+    " Remove the last entry which is just the time it took to execute
+    call setqflist(Pop(getqflist(), getqflist({'size': 1}).size-1))
+endfunction
+
+" Treat enter normally but change qf expectations if in qf
+function! Enter()
+    if &buftype ==# 'quickfix'
+        let g:goToFirst=0
+    endif
+    execute "normal! \<CR>"
+endfunction
+
+"The rest =====================================================================
 
 "Airline stuff
 set noshowmode
@@ -100,12 +157,8 @@ if has('python3')
     let g:gundo_prefer_python3 = 1          " anything else breaks on Ubuntu 16.04+
 endif
 
-"Make stuff
-nnoremap <leader>b :AsyncRun -program=make @<CR>
-set autowrite
-
 " Commands abbreviations
-cabbrev ack AsyncRun ack -s -H --nopager --nocolor --nogroup --column
+cabbrev ack AsyncRun ag --vimgrep
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -118,22 +171,35 @@ let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<L
 let g:rtagsUseLocationList = 0
 nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 
-" quickfix stuff
-" Always have quickfix take the entire bottom of the screen
-au FileType qf wincmd J
+" Quickfix and AsyncRun stuff vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
 " quickfix related remaps
 nmap <silent> <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
 nmap <silent> <Leader>Q :colder<cr>
 nmap <silent> <Leader>W :cnewer<cr>
-" The quickfix window will open when an async job finishes.
-augroup vimrc
-autocmd User AsyncRunStart call asyncrun#quickfix_toggle(8, 1)
-augroup END
+nnoremap <leader>b :AsyncRun -program=make @<CR>
+noremap <silent> <C-c> :AsyncStop<CR>
+
+" Detect end of list errors and loop around
+command Cprev try | cprev | catch | clast | catch | endtry
+
+function! CNext()
+    if g:goToFirst
+        exec('cfirst')
+        let g:goToFirst=0
+        return
+    endif
+        try | cnext | catch | cfirst | catch | endtry
+endfunction
+
 " Navigate the results without losing focus
-noremap <C-j> :cnext<cr>zz
-noremap <C-k> :cprevious<cr>zz
+noremap <silent> <C-j> :call CNext()<cr>zz
+noremap <silent> <C-k> :Cprev<cr>zz
+
+" quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 " Always move to a valid window before calling a command
+noremap :q :q
 noremap : :call GoToFirstValid()<cr>:
 
 " peekaboo stuff 
@@ -145,13 +211,6 @@ nmap <Leader>hn  :GitGutterNextHunk<cr>
 nmap <Leader>hp  :GitGutterPrevHunk<cr>
 nmap <Leader>hu  :GitGutterUndoHunk<cr>
 nmap <Leader>hs  :GitGutterStageHunk<cr>
-
-" Open nerdtree on empty dirs and don't let it be the last window
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
 "Nerdtree stuff
 noremap <Leader>t :NERDTreeToggle<cr>
@@ -181,8 +240,6 @@ set smartindent
 " Look for tags starting at the current directory and all the way up to root
 set tags=./tags;/
 
-" Don't add the comment prefix when I hit enter or o/O on a comment line.
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Key remaps
 noremap zk zt
@@ -190,13 +247,14 @@ noremap zj zb
 nnoremap Q <nop>
 nnoremap n nzz
 nnoremap N Nzz
+nnoremap <silent> <CR> :call Enter()<CR>
 
 "Produce the oposite effect from J
 nnoremap K i<CR><Esc>
 
 "Tab navigation
-nnoremap <tab> :tabnext<CR>
-nnoremap <S-tab> :tabprevious<CR> 
+nnoremap <C-tab> :tabnext<CR>
+nnoremap <C-S-tab> :tabprevious<CR> 
 
 " Quit everything!
 noremap <C-q> :qa!<CR>
@@ -214,7 +272,6 @@ map <right> <nop>
 "Split related behavior
 set splitbelow
 set splitright
-autocmd VimResized * wincmd =
 
 "Misc
 set ignorecase
@@ -232,6 +289,9 @@ set clipboard=exclude:.*
 " Set to auto read when a file is changed from the outside
 set autoread
 
+" Set autowrite to avoid having to save everything before building
+set autowrite
+
 " Use Unix as the standard file type
 set fileformats=unix,dos,mac
 
@@ -244,6 +304,9 @@ set showcmd
 "Autocomplete like bash
 set wildmenu
 set wildmode=list:longest
+
+" Assume typist is reasonably fast and terminal is very fast
+set timeoutlen=1000 ttimeoutlen=10
 
 "Also save with capital W
 command W w
@@ -282,7 +345,4 @@ function CollapseAllBlocks()
     set diffopt=filler,context:0
     set foldopen-=search
 endfunction
-noremap <silent> <C-c> :call CollapseAllBlocks()<CR>
-
-"TODO : Specialize the collpase function to handle non-diff mode
-"TODO : When nerdtree opens
+noremap <silent> <leader>c :call CollapseAllBlocks()<CR>
