@@ -19,6 +19,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
 Plug 'rhysd/vim-clang-format'
+Plug 'rhysd/vim-llvm'
 call plug#end()
 
 "Variables======================================================================
@@ -237,10 +238,6 @@ set indentkeys-=0#
 " Use smart indenting when starting a new line.
 set smartindent
 
-" Look for tags starting at the current directory and all the way up to root
-set tags=./tags;/
-
-
 "Key remaps
 noremap zk zt
 noremap zj zb
@@ -306,7 +303,7 @@ set wildmenu
 set wildmode=list:longest
 
 " Assume typist is reasonably fast and terminal is very fast
-set timeoutlen=1000 ttimeoutlen=10
+set timeoutlen=1000 ttimeoutlen=50
 
 "Also save with capital W
 command W w
