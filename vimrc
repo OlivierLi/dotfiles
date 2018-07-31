@@ -8,6 +8,8 @@ if !&diff
 endif
 
 Plug 'skywind3000/asyncrun.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/async.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'scrooloose/nerdcommenter'
@@ -18,7 +20,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
-Plug 'rhysd/vim-clang-format'
 Plug 'rhysd/vim-llvm'
 call plug#end()
 
@@ -52,57 +53,20 @@ augroup vimrc
     autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
+    " QuickFix autocmds
+    autocmd FileType qf nnoremap <buffer> s :call OpenQF("vnew")<cr>
+    autocmd FileType qf nnoremap <buffer> t :call OpenQF("tabedit")<cr>
+
 augroup END
 
 "Functions======================================================================
 
-function! IsWinValid(win_num)
-    let bnum = winbufnr(a:win_num) " Get the buffer number associated with window
-    if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
-                \ && getbufvar(bnum, "&buftype") != "quickfix"
-                \ && !getwinvar(a:win_num, '&previewwindow')
-            return 1
-    endif
-    return 0
-endfunction
-
-function! GetNextValid()
-    let i = 1
-    while i <= winnr('$') " Iterate until the number of the last window
-        if IsWinValid(l:i)
-            return l:i
-        endif
-
-        let i += 1
-    endwhile
-    return -1
-endfunction
-
-" Jump to the next valid window, prioritize the previous window
-function! GoToFirstValid()
-
-    " If in a valid window do nothing
-    if IsWinValid(winnr())
-        return
-    endif
-
-    " If the previous window was valid prioritize it
-    let last_index = winnr('#')
-    if IsWinValid(l:last_index)
-        exec(l:last_index. 'wincmd w')
-        return
-    endif
-
-    let l:i = GetNextValid()
-    if l:i != -1
-        exec(l:i. 'wincmd w')
-    endif
-endfunction
-
-function! Pop(l, i)
-    let new_list = deepcopy(a:l)
-    call remove(new_list, a:i)
-    return new_list
+" Open the qf item under the cursor in the new space created with a:cmd 
+function! OpenQF(cmd)
+  let l:qf_idx = line('.')
+  call my_functions#GoToFirstValid()
+  execute a:cmd
+  execute l:qf_idx . 'cc'
 endfunction
 
 function! BeforeAsynCommand()
@@ -113,9 +77,9 @@ endfunction
 
 function! AfterAsyncCommand()
     " Remove the first entry which is just a print of the command
-    call setqflist(Pop(getqflist(),0))
+    call setqflist(my_functions#Pop(getqflist(),0))
     " Remove the last entry which is just the time it took to execute
-    call setqflist(Pop(getqflist(), getqflist({'size': 1}).size-1))
+    call setqflist(my_functions#Pop(getqflist(), getqflist({'size': 1}).size-1))
 endfunction
 
 " Treat enter normally but change qf expectations if in qf
@@ -124,6 +88,38 @@ function! Enter()
         let g:goToFirst=0
     endif
     execute "normal! \<CR>"
+endfunction
+
+"Go to the next element of interest, infer what that is from context
+function! CNext()
+
+    "If in diff mode go to next diff no matter what
+    if &diff
+      execute "normal! ]c"
+      return
+    endif
+
+    if g:goToFirst
+        exec('cfirst')
+        let g:goToFirst=0
+        return
+    endif
+        try | cnext | catch | cfirst | catch | endtry
+
+endfunction
+
+"Go to the previous element of interest, infer what that is from context
+function! CPrev()
+
+    "If in diff mode go to prev diff no matter what
+    if &diff
+      execute "normal! [c"
+      return
+    endif
+
+    " Detect end of list errors and loop around
+    command Cprev try | cprev | catch | clast | catch | endtry
+
 endfunction
 
 "The rest =====================================================================
@@ -181,27 +177,15 @@ nmap <silent> <Leader>W :cnewer<cr>
 nnoremap <leader>b :AsyncRun -program=make @<CR>
 noremap <silent> <C-c> :AsyncStop<CR>
 
-" Detect end of list errors and loop around
-command Cprev try | cprev | catch | clast | catch | endtry
-
-function! CNext()
-    if g:goToFirst
-        exec('cfirst')
-        let g:goToFirst=0
-        return
-    endif
-        try | cnext | catch | cfirst | catch | endtry
-endfunction
-
 " Navigate the results without losing focus
 noremap <silent> <C-j> :call CNext()<cr>zz
-noremap <silent> <C-k> :Cprev<cr>zz
+noremap <silent> <C-k> :call CPrev()<cr>zz
 
 " quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 " Always move to a valid window before calling a command
 noremap :q :q
-noremap : :call GoToFirstValid()<cr>:
+noremap : :call my_functions#GoToFirstValid()<cr>:
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
