@@ -39,6 +39,7 @@ hi Special guifg=#e7f6da guibg=NONE guisp=NONE gui=NONE ctermfg=194 ctermbg=NONE
 hi LineNr guifg=#857b6f guibg=#000000 guisp=#000000 gui=NONE ctermfg=101 ctermbg=NONE cterm=NONE
 hi StatusLine guifg=#f6f3e8 guibg=#444444 guisp=#444444 gui=italic ctermfg=230 ctermbg=238 cterm=NONE
 hi Normal guifg=#f6f3e8 guibg=#242424 guisp=#242424 gui=NONE ctermfg=230 ctermbg=235 cterm=NONE
+hi SignColumn guifg=#f6f3e8 guibg=#242424 guisp=#242424 gui=NONE ctermfg=230 ctermbg=235 cterm=NONE
 hi Label guifg=#cae682 guibg=NONE guisp=NONE gui=NONE ctermfg=150 ctermbg=NONE cterm=NONE
 "hi CTagsImport -- no settings --
 hi PMenuSel guifg=#000000 guibg=#cae682 guisp=#cae682 gui=NONE ctermfg=NONE ctermbg=150 cterm=NONE
@@ -134,3 +135,8 @@ hi rubycontrol guifg=#6699CC guibg=NONE guisp=NONE gui=NONE ctermfg=68 ctermbg=N
 hi rubyregexp guifg=#B18A3D guibg=NONE guisp=NONE gui=NONE ctermfg=137 ctermbg=NONE cterm=NONE
 hi operator guifg=#ffffff guibg=NONE guisp=NONE gui=NONE ctermfg=15 ctermbg=NONE cterm=NONE
 hi longlinewarning guifg=NONE guibg=#371F1C guisp=#371F1C gui=underline ctermfg=NONE ctermbg=237 cterm=underline
+
+"diff
+highlight SignifySignAdd           cterm=bold ctermbg=none ctermfg=119
+highlight SignifySignDelete        cterm=bold ctermbg=none ctermfg=167
+highlight SignifySignChange        cterm=bold ctermbg=none ctermfg=227

@@ -4,7 +4,7 @@ if !&diff
     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
     Plug 'scrooloose/nerdtree'
     Plug 'junegunn/vim-peekaboo'
-    Plug 'airblade/vim-gitgutter'
+    Plug 'mhinz/vim-signify'
 endif
 
 Plug 'skywind3000/asyncrun.vim'
@@ -69,6 +69,16 @@ function! OpenQF(cmd)
   execute l:qf_idx . 'cc'
 endfunction
 
+function! IsQFOpened()
+  for winnr in range(1, winnr('$'))
+    if getwinvar(winnr, '&syntax') == 'qf'
+      return 1
+    endif
+  endfor
+
+  return 0
+endfunction
+
 function! BeforeAsynCommand()
     " We have new content in the quickFix. We whould start from the beginning
     let g:goToFirst=1
@@ -93,32 +103,38 @@ endfunction
 "Go to the next element of interest, infer what that is from context
 function! CNext()
 
-    "If in diff mode go to next diff no matter what
-    if &diff
-      execute "normal! ]c"
+    if IsQFOpened()
+      call my_functions#GoToFirstValid()
+
+      if g:goToFirst
+          exec('cfirst')
+          let g:goToFirst=0
+      else
+          try | cnext | catch | cfirst | catch | endtry
+      endif
+
       return
     endif
 
-    if g:goToFirst
-        exec('cfirst')
-        let g:goToFirst=0
-        return
-    endif
-        try | cnext | catch | cfirst | catch | endtry
+    "Go to next diff or to next signify hunk depending on mode
+    execute "normal ]c"
 
 endfunction
 
 "Go to the previous element of interest, infer what that is from context
 function! CPrev()
 
-    "If in diff mode go to prev diff no matter what
-    if &diff
-      execute "normal! [c"
+    if IsQFOpened()
+      call my_functions#GoToFirstValid()
+
+      " Detect end of list errors and loop around
+      try | cprev | catch | clast | catch | endtry
+
       return
     endif
 
-    " Detect end of list errors and loop around
-    command Cprev try | cprev | catch | clast | catch | endtry
+    "Go to previous diff or to previous signify hunk depending on mode
+    execute "normal [c"
 
 endfunction
 
