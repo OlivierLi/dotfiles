@@ -136,7 +136,10 @@ hi rubyregexp guifg=#B18A3D guibg=NONE guisp=NONE gui=NONE ctermfg=137 ctermbg=N
 hi operator guifg=#ffffff guibg=NONE guisp=NONE gui=NONE ctermfg=15 ctermbg=NONE cterm=NONE
 hi longlinewarning guifg=NONE guibg=#371F1C guisp=#371F1C gui=underline ctermfg=NONE ctermbg=237 cterm=underline
 
-"diff
+"Diff
+highlight DiffText   cterm=bold ctermfg=7 ctermbg=56
+
+"Signify specific colors, make them like gitgutter's
 highlight SignifySignAdd           cterm=bold ctermbg=none ctermfg=119
 highlight SignifySignDelete        cterm=bold ctermbg=none ctermfg=167
 highlight SignifySignChange        cterm=bold ctermbg=none ctermfg=227

@@ -336,9 +336,6 @@ function! SetMakeprg()
 endfunction
 call SetMakeprg()
 
-" Additional color settings specifically for diff
-highlight DiffText   cterm=bold ctermfg=7 ctermbg=56
-
 " Used to collapse all blocks in a vimdiff
 function CollapseAllBlocks()
     " Only search the unfolded areas

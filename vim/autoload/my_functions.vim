@@ -3,6 +3,7 @@ if exists("g:loaded_my_functions")
 endif
 let g:loaded_my_functions = 1
 
+"Test whether a window is valid, that is to say whether it is suitable to open a file or not
 function! my_functions#IsWinValid(win_num)
     let bnum = winbufnr(a:win_num) " Get the buffer number associated with window
     if bnum != -1 && getbufvar(bnum, '&buftype') ==# '' " If the buffer has a buftype it's probably owned by a plugin
@@ -13,6 +14,7 @@ function! my_functions#IsWinValid(win_num)
     return 0
 endfunction
 
+"Get the index of the first valid window
 function! my_functions#GetNextValid()
     let i = 1
     while i <= winnr('$') " Iterate until the number of the last window
@@ -46,12 +48,14 @@ function! my_functions#GoToFirstValid()
     endif
 endfunction
 
+"Make it so that toggling to last windows brings up the first valid window
 function! my_functions#SetFirstValidAsPrevious()
   call my_functions#GoToFirstValid()
   let last_index = winnr('#')
   exec(l:last_index. 'wincmd w')
 endfunction
 
+"Remove the element i of a list and return a copy
 function! my_functions#Pop(l, i)
     let new_list = deepcopy(a:l)
     call remove(new_list, a:i)
