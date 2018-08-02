@@ -140,6 +140,9 @@ endfunction
 
 "The rest =====================================================================
 
+"Signify stuff
+let g:signify_update_on_focusgained=1 "Update VCS marks when focus gained
+
 "Airline stuff
 set noshowmode
 set laststatus=2
@@ -200,8 +203,8 @@ noremap <silent> <C-k> :call CPrev()<cr>zz
 " quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 " Always move to a valid window before calling a command
-noremap :q :q
-noremap : :call my_functions#GoToFirstValid()<cr>:
+nnoremap :q :q
+nnoremap : :call my_functions#GoToFirstValid()<cr>:
 
 " peekaboo stuff 
 let g:peekaboo_prefix = '<leader>'
