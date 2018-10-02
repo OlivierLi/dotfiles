@@ -7,6 +7,8 @@ if !&diff
     Plug 'mhinz/vim-signify'
 endif
 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/async.vim'
