@@ -59,9 +59,18 @@ augroup vimrc
     autocmd FileType qf nnoremap <buffer> s :call OpenQF("vnew")<cr>
     autocmd FileType qf nnoremap <buffer> t :call OpenQF("tabedit")<cr>
 
+    " Always show the gutter
+    autocmd BufRead,BufNewFile * setlocal signcolumn=yes
+
 augroup END
 
 "Functions======================================================================
+
+" Call the provided function after moving to a valid window.
+function! InFirstValid(cmd)
+  call my_functions#GoToFirstValid()
+  execute a:cmd
+endfunction
 
 " Open the qf item under the cursor in the new space created with a:cmd 
 function! OpenQF(cmd)
@@ -174,6 +183,10 @@ noremap <Leader>g :GundoToggle<cr>
 if has('python3')
     let g:gundo_prefer_python3 = 1          " anything else breaks on Ubuntu 16.04+
 endif
+
+"fzf stuff
+noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
+noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 
 " Commands abbreviations
 cabbrev ack AsyncRun ag --vimgrep
