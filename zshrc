@@ -11,7 +11,8 @@ alias "ack"="ack-grep"
 alias "history"="history 1"
 alias "redshift-night"="redshift -O 4000 -l 45.133315:-71.819000 -b 0.5"
 alias "redshift-late-night"="redshift -O 3000 -l 45.133315:-71.819000 -b 0.3"
-alias "redshift-day"="redshift -O 5500 -l 45.133315:-71.819000 -b 1.0"
+alias "redshift-read"="redshift -O 4200 -l 45.133315:-71.819000 -b 1.0"
+alias "redshift-bright"="redshift -O 5500 -l 45.133315:-71.819000 -b 1.0"
 
 #If no session named default exists start one. If it does exist attach to it.
 # -2 and TERM to fix colors in vim
@@ -43,3 +44,6 @@ SAVEHIST=5000
 #Custom auto-completions
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# For Ubuntu 18.04
+export LC_ALL=en_US.UTF-8
