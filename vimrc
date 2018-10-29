@@ -309,6 +309,8 @@ set autowrite
 " Use Unix as the standard file type
 set fileformats=unix,dos,mac
 
+set encoding=utf-8
+
 "Toggle auto-indenting for code paste
 set pastetoggle=<F2>
 
