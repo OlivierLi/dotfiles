@@ -65,6 +65,19 @@ augroup END
 
 "Functions======================================================================
 
+" Remove and/or show trailing whitespace
+function StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal my
+    normal `z
+    normal mz
+  endif
+endfunction
+
 " Call the provided function after moving to a valid window.
 function! InFirstValid(cmd)
   call my_functions#GoToFirstValid()
@@ -167,6 +180,7 @@ nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
 nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 
 "YCM settings
+set completeopt-=preview " Don't show the autocomplete results in the preview window.
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -297,6 +311,7 @@ set number
 set relativenumber
 set incsearch
 set backspace=2
+set modelines=0
 
 "Disabble X clipboard for faster boot
 set clipboard=exclude:.*
