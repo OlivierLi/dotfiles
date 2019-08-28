@@ -1,7 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 if !&diff
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'for': ['cpp', 'python'] }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'python'] }
     Plug 'scrooloose/nerdtree'
     Plug 'junegunn/vim-peekaboo'
     Plug 'mhinz/vim-signify'
@@ -14,7 +14,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/async.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'scrooloose/nerdcommenter'
+Plug 'olivierli/nerdcommenter'
 Plug 'takac/vim-hardtime'
 Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
 Plug 'christoomey/vim-tmux-navigator'
@@ -263,8 +263,9 @@ nnoremap n nzz
 nnoremap N Nzz
 nnoremap <silent> <CR> :call Enter()<CR>
 
-"Produce the oposite effect from J
-nnoremap K i<CR><Esc>
+" Comment aware merge and split
+nnoremap J :call MergeUp()<CR>
+nnoremap K :call SplitDown()<CR>
 
 "Tab navigation
 nnoremap <C-tab> :tabnext<CR>
