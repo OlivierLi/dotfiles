@@ -48,6 +48,17 @@ function! my_functions#GoToFirstValid()
     endif
 endfunction
 
+" Go directly to QF if opened
+function! my_functions#GoToQF()
+  for winnr in range(1, winnr('$'))
+    let l:win_index = getwinvar(winnr, '&syntax') 
+    if l:win_index == 'qf'
+        exec(l:winnr. 'wincmd w')
+    endif
+  endfor
+endfunction
+
+
 "Make it so that toggling to last windows brings up the first valid window
 function! my_functions#SetFirstValidAsPrevious()
   call my_functions#GoToFirstValid()

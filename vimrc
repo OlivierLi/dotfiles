@@ -105,7 +105,8 @@ endfunction
 function! BeforeAsynCommand()
     " We have new content in the quickFix. We whould start from the beginning
     let g:goToFirst=1
-    call asyncrun#quickfix_toggle(8, 1)
+    exec 'botright copen 8'
+    call my_functions#GoToQF()
 endfunction
 
 function! AfterAsyncCommand()
@@ -186,6 +187,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
+let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
 
 "Only applicable when vim-rtags not loaded
 nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
