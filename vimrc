@@ -68,7 +68,7 @@ augroup END
 function! GotoDefinition()
     " First try to use rtags as that is the most reliable source.
     try
-        rtags#JumpTo(g:SAME_WINDOW)
+        call rtags#JumpTo(g:SAME_WINDOW)
     " If that fails for any reason fall back on YCM.
     catch
         execute 'YcmCompleter GoToDefinition'
