@@ -65,15 +65,6 @@ augroup END
 
 "Functions======================================================================
 
-function! GotoDefinition()
-    " First try to use rtags as that is the most reliable source.
-    let l:result = rtags#JumpTo(g:SAME_WINDOW)
-    " If that fails for any reason fall back on YCM.
-    if !result
-        execute 'YcmCompleter GoToDefinition'
-    endif
-endfunction
-
 " Remove and/or show trailing whitespace
 function StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
@@ -198,8 +189,8 @@ let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
 
-nnoremap <C-F> :call GotoDefinition()<CR>
-nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
+nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
+nnoremap <silent> <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Gundo stuff
 noremap <Leader>g :GundoToggle<cr>
