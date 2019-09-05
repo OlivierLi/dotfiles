@@ -67,12 +67,11 @@ augroup END
 
 function! GotoDefinition()
     " First try to use rtags as that is the most reliable source.
-    try
-        call rtags#JumpTo(g:SAME_WINDOW)
+    let l:result = rtags#JumpTo(g:SAME_WINDOW)
     " If that fails for any reason fall back on YCM.
-    catch
+    if !result
         execute 'YcmCompleter GoToDefinition'
-    endtry
+    endif
 endfunction
 
 " Remove and/or show trailing whitespace
