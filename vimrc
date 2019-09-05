@@ -65,6 +65,16 @@ augroup END
 
 "Functions======================================================================
 
+function! GotoDefinition()
+    " First try to use rtags as that is the most reliable source.
+    try
+        rtags#JumpTo(g:SAME_WINDOW)
+    " If that fails for any reason fall back on YCM.
+    catch
+        execute 'YcmCompleter GoToDefinition'
+    endtry
+endfunction
+
 " Remove and/or show trailing whitespace
 function StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
@@ -189,8 +199,7 @@ let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
 
-"Only applicable when vim-rtags not loaded
-nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
+nnoremap <C-F> :call GotoDefinition()<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Gundo stuff
@@ -215,7 +224,6 @@ let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<L
 
 "Rtags stuff
 let g:rtagsUseLocationList = 0
-nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 
 " Quickfix and AsyncRun stuff vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
