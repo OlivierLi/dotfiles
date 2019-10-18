@@ -188,6 +188,7 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
+autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
 
 nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
 nnoremap <silent> <leader>rf :YcmCompleter GoToReferences<CR>
