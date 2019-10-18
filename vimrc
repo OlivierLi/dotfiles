@@ -1,7 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 if !&diff
-    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer', 'for': ['cpp', 'python'] }
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clangd-completer', 'for': ['cpp', 'python'] }
     Plug 'scrooloose/nerdtree'
     Plug 'junegunn/vim-peekaboo'
     Plug 'mhinz/vim-signify'
