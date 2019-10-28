@@ -1,0 +1,7 @@
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+    squash = "!git rebase -i HEAD~$(git rev-list --count master...)"
