@@ -38,13 +38,13 @@ augroup vimrc
 
     " The quickfix window will open when an async job finishes.
     autocmd User AsyncRunStart call BeforeAsynCommand()
-    
+
     " Remove the useless item for quickfix list
     autocmd User AsyncRunStop  call AfterAsyncCommand()
 
     " Don't add the comment prefix when I hit enter or o/O on a comment line.
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    
+
     " The vimsplits should stay proportional through resizes
     autocmd VimResized * wincmd =
 
@@ -84,7 +84,7 @@ function! InFirstValid(cmd)
   execute a:cmd
 endfunction
 
-" Open the qf item under the cursor in the new space created with a:cmd 
+" Open the qf item under the cursor in the new space created with a:cmd
 function! OpenQF(cmd)
   let l:qf_idx = line('.')
   call my_functions#GoToFirstValid()
@@ -204,7 +204,9 @@ noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
 noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 
 " Commands abbreviations
-cabbrev ack AsyncRun ag --vimgrep
+cabbrev ack AsyncRun rg --vimgrep
+cabbrev gd Gvdiffsplit 
+cabbrev gvd Gvdiffsplit master
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -235,7 +237,7 @@ noremap <silent> <C-k> :call CPrev()<cr>zz
 nnoremap :q :q
 nnoremap : :call my_functions#GoToFirstValid()<cr>:
 
-" peekaboo stuff 
+" peekaboo stuff
 let g:peekaboo_prefix = '<leader>'
 
 "Gitgutter stuff
@@ -284,7 +286,7 @@ nnoremap K :call SplitDown()<CR>
 
 "Tab navigation
 nnoremap <C-tab> :tabnext<CR>
-nnoremap <C-S-tab> :tabprevious<CR> 
+nnoremap <C-S-tab> :tabprevious<CR>
 
 " Quit everything!
 noremap <C-q> :qa!<CR>
@@ -364,7 +366,7 @@ function! SetMakeprg()
         " default to single process if we can't figure it out automatically
         let l:n = 1
     endif
-    
+
     let &makeprg = 'make' . (l:n > 1 ? (' -j'.(l:n + 1)) : '')
 endfunction
 call SetMakeprg()
