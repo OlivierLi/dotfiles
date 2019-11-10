@@ -2,3 +2,5 @@
 map <c-d> scrollPageDown
 map <c-u> scrollPageUp
 map <c-s> scrollLeft
+map <c-o> goBack
+map <c-i> goForward
