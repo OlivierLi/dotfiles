@@ -282,8 +282,8 @@ colorscheme wombat
 
 "Indent stuff
 set expandtab
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 
 "Don't treat the hash is a special case when indenting
 set cindent
