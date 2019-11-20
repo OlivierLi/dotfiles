@@ -51,7 +51,7 @@ endfunction
 " Go directly to QF if opened
 function! my_functions#GoToQF()
   for winnr in range(1, winnr('$'))
-    let l:win_index = getwinvar(winnr, '&syntax') 
+    let l:win_index = getwinvar(winnr, '&syntax')
     if l:win_index == 'qf'
         exec(l:winnr. 'wincmd w')
     endif
@@ -73,3 +73,41 @@ function! my_functions#Pop(l, i)
     return new_list
 endfunction
 
+" Function to get the test command for a Chromium test.
+function! my_functions#GetTestCommand()
+  "TODO : Warn of ignore DISABLED flag
+
+  let l:current_line = getline(getpos('.')[1])
+
+  " Sometimes the test name is on two lines
+  if l:current_line !~ ".*{$"
+    let l:second_line = substitute(getline(getpos('.')[1]+1), "^ *", "", "")
+    let l:test_name = substitute(l:current_line . l:second_line , "\n", "", "")
+  else
+    let l:test_name = l:current_line
+  endif
+
+  " Remove everything before the class name
+  let l:test_name = substitute(l:test_name, "^.*(","", "")
+  " Separate by period instead of comma
+  let l:test_name = substitute(l:test_name, ',', '.', '')
+  " Remove stuff at the end
+  let l:test_name = substitute(l:test_name, ').*', '', '')
+  " Remove ALL spaces
+  let l:test_name = substitute(l:test_name, ' ', '', '')
+
+  " Choose the unit test target
+  let l:full_path = expand('%')
+  if l:full_path =~ "^components.*"
+    let l:target = "components_unittests"
+  elseif l:current_line =~ "IN_PROC_BROWSER_TEST_F.*"
+    let l:target = "browser_tests"
+  else
+    let l:target = "unit_tests"
+  endif
+
+  " TODO: running arguments : Add the correct \[0-9]+ or whatever for parametrized tests
+  let l:command = "run_chrome_tests " .  l:target . " run " . l:test_name
+
+  return l:command
+endfunction

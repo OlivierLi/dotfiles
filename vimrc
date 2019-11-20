@@ -7,6 +7,8 @@ if !&diff
     Plug 'mhinz/vim-signify'
 endif
 
+Plug 'aklt/plantuml-syntax'
+Plug 'benmills/vimux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'skywind3000/asyncrun.vim'
@@ -64,8 +66,11 @@ augroup vimrc
 augroup END
 
 "Functions======================================================================
+function! StripLeadingWhiteSpace(string)
+ return substitute(a:string, '^\s*', '', '')
+endfunction
 
-" Remove and/or show trailing whitespace
+" Remove and/or show trailing whitespace in the full buffer.
 function StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
     normal mz
@@ -164,6 +169,22 @@ endfunction
 
 "The rest =====================================================================
 
+"Vimux stuff
+let g:VimuxOrientation = "h"
+autocmd VimEnter * call VimuxOpenRunner()
+"TODO: Command to send visual selection
+"TODO: Set br command : call VimuxSendText("br " . expand("%") . ":" .  getpos('.')[1])
+nnoremap <silent> <C-s><C-s> :call VimuxSendText(StripLeadingWhiteSpace(getline('.')))<cr>
+
+nnoremap <silent> <leader>xp :call VimuxPromptCommand()<cr>
+nnoremap <silent> <leader>xx :call VimuxRunLastCommand()<cr>
+nnoremap <silent> <leader>xc :call VimuxInterruptRunner()<cr>
+nnoremap <silent> <leader>xt :call VimuxRunCommand(my_functions#GetTestCommand())<cr>
+
+"Don't use VimuxRunCommand to avoid clearing the last command used.
+"TODO : Write a better fix because this fails if there is text on the line
+nnoremap <silent> <leader>xl :call VimuxSendText("clear\n")<cr>
+
 "Signify stuff
 let g:signify_update_on_focusgained=1 "Update VCS marks when focus gained
 
@@ -190,8 +211,8 @@ let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
 autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
 
-nnoremap <silent> <C-F> :call rtags#JumpTo(g:SAME_WINDOW)<CR>
-nnoremap <silent> <leader>rf :YcmCompleter GoToReferences<CR>
+nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
 "Gundo stuff
 noremap <Leader>g :GundoToggle<cr>
@@ -205,8 +226,8 @@ noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 
 " Commands abbreviations
 cabbrev ack AsyncRun rg --vimgrep
-cabbrev gd Gvdiffsplit 
-cabbrev gvd Gvdiffsplit master
+cabbrev gd Gvdiffsplit
+cabbrev gdm Gvdiffsplit master
 
 "Hardtime settings
 let g:hardtime_default_on = 1
@@ -341,7 +362,10 @@ set wildmenu
 set wildmode=list:longest
 
 " Assume typist is reasonably fast and terminal is very fast
-set timeoutlen=1000 ttimeoutlen=50
+set timeoutlen=1000 ttimeoutlen=10
+
+" Default to not read-only in vimdiff
+set noro
 
 "Also save with capital W
 command W w
