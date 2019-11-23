@@ -177,6 +177,28 @@ function! CPrev()
 
 endfunction
 
+"Find out how many cores to use for make
+function! SetMakeprg()
+    if filereadable('/proc/cpuinfo')
+        " this works on most Linux systems
+        let l:n = system('grep -c ^processor /proc/cpuinfo') + 0
+    else
+        " default to single process if we can't figure it out automatically
+        let l:n = 1
+    endif
+
+    let &makeprg = 'make' . (l:n > 1 ? (' -j'.(l:n + 1)) : '')
+endfunction
+call SetMakeprg()
+
+" Used to collapse all blocks in a vimdiff
+function CollapseAllBlocks()
+    " Only search the unfolded areas
+    set diffopt=filler,context:0
+    set foldopen-=search
+endfunction
+noremap <silent> <leader>c :call CollapseAllBlocks()<CR>
+
 "The rest =====================================================================
 
 "Vimux stuff
@@ -387,24 +409,3 @@ set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
-"Find out how many cores to use for make
-function! SetMakeprg()
-    if filereadable('/proc/cpuinfo')
-        " this works on most Linux systems
-        let l:n = system('grep -c ^processor /proc/cpuinfo') + 0
-    else
-        " default to single process if we can't figure it out automatically
-        let l:n = 1
-    endif
-
-    let &makeprg = 'make' . (l:n > 1 ? (' -j'.(l:n + 1)) : '')
-endfunction
-call SetMakeprg()
-
-" Used to collapse all blocks in a vimdiff
-function CollapseAllBlocks()
-    " Only search the unfolded areas
-    set diffopt=filler,context:0
-    set foldopen-=search
-endfunction
-noremap <silent> <leader>c :call CollapseAllBlocks()<CR>
