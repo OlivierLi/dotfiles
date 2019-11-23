@@ -36,7 +36,10 @@ let g:goToFirst=1 " Controls whether <C-j> should take you to the first or next 
 augroup vimrc
 
     " Always have quickfix take the entire bottom of the screen
-    au FileType qf wincmd J
+    autocmd FileType qf wincmd J
+
+    " Some command should only open from editable buffers.
+    autocmd CmdlineLeave * call my_functions#MoveToValidWindowAfterCommand()
 
     " The quickfix window will open when an async job finishes.
     autocmd User AsyncRunStart call BeforeAsynCommand()
@@ -253,10 +256,6 @@ noremap <silent> <C-j> :call CNext()<cr>zz
 noremap <silent> <C-k> :call CPrev()<cr>zz
 
 " quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-" Always move to a valid window before calling a command
-nnoremap :q :q
-nnoremap : :call my_functions#GoToFirstValid()<cr>:
 
 " peekaboo stuff
 let g:peekaboo_prefix = '<leader>'

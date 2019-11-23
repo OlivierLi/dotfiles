@@ -58,6 +58,18 @@ function! my_functions#GoToQF()
   endfor
 endfunction
 
+function! my_functions#MoveToValidWindowAfterCommand()
+  let l:cmd = getcmdline()
+
+  " Match the commands that should only be executed in a valid buffer.
+  let regexes = ["e .*", ".* %", "vs.*"]
+
+  for regex in regexes
+    if l:cmd =~ regex 
+      call my_functions#GoToFirstValid()
+    endif
+  endfor
+endfunc
 
 "Make it so that toggling to last windows brings up the first valid window
 function! my_functions#SetFirstValidAsPrevious()
