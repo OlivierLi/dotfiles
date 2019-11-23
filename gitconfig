@@ -1,3 +1,7 @@
+# Add this in your global gitconfig :)
+#  [include]
+#    path = ~/git/dotfiles/gitconfig
+
 [diff]
 	tool = vimdiff
 [difftool]
