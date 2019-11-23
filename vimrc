@@ -76,12 +76,19 @@ endfunction
 " Remove and/or show trailing whitespace in the full buffer.
 function StripTrailingWhitespace()
   if !&binary && &filetype != 'diff'
+    " Mark where we are in document.
     normal mz
+    " Go to top of page and mark.
     normal Hmy
+    " Remove trailing whitespace
     %s/\s\+$//e
+    " Go back to previous top of page and bring it back to top of viewport.
     normal 'yz<CR>
+    " Remove mark.
     normal my
+    " Go back to previous position.
     normal `z
+    " Remove mark.
     normal mz
   endif
 endfunction
