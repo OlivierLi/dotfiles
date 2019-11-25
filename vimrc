@@ -142,7 +142,7 @@ endfunction
 "Go to the next element of interest, infer what that is from context
 function! CNext()
 
-    if IsQFOpened()
+    if IsQFOpened() && len(getqflist()) != 0
       call my_functions#GoToFirstValid()
 
       if g:goToFirst
@@ -155,7 +155,7 @@ function! CNext()
       return
     endif
 
-    "Go to next diff or to next signify hunk depending on mode
+    "Go to next diff or to next signify hunk depending on mode.
     execute "normal ]c"
 
 endfunction
@@ -163,7 +163,7 @@ endfunction
 "Go to the previous element of interest, infer what that is from context
 function! CPrev()
 
-    if IsQFOpened()
+    if IsQFOpened() && len(getqflist()) != 0
       call my_functions#GoToFirstValid()
 
       " Detect end of list errors and loop around
