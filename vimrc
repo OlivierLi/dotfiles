@@ -27,11 +27,11 @@ Plug 'kshenoy/vim-signature' " Handle markers in the gutter
 Plug 'rhysd/vim-llvm'
 call plug#end()
 
-"Variables======================================================================
+" Variables======================================================================
 
 let g:goToFirst=1 " Controls whether <C-j> should take you to the first or next result
 
-"Autocmds=======================================================================
+" Autocmds=======================================================================
 
 augroup vimrc
 
@@ -68,7 +68,7 @@ augroup vimrc
 
 augroup END
 
-"Functions======================================================================
+" Functions======================================================================
 function! StripLeadingWhiteSpace(string)
  return substitute(a:string, '^\s*', '', '')
 endfunction
@@ -172,12 +172,12 @@ function! CPrev()
       return
     endif
 
-    "Go to previous diff or to previous signify hunk depending on mode
+    " Go to previous diff or to previous signify hunk depending on mode
     execute "normal [c"
 
 endfunction
 
-"Find out how many cores to use for make
+" Find out how many cores to use for make
 function! SetMakeprg()
     if filereadable('/proc/cpuinfo')
         " this works on most Linux systems
@@ -199,13 +199,13 @@ function CollapseAllBlocks()
 endfunction
 noremap <silent> <leader>c :call CollapseAllBlocks()<CR>
 
-"The rest =====================================================================
+" The rest =====================================================================
 
-"Vimux stuff
+" Vimux stuff
 let g:VimuxOrientation = "h"
 autocmd VimEnter * call VimuxOpenRunner()
-"TODO: Command to send visual selection
-"TODO: Set br command : call VimuxSendText("br " . expand("%") . ":" .  getpos('.')[1])
+" TODO: Command to send visual selection
+" TODO: Set br command : call VimuxSendText("br " . expand("%") . ":" .  getpos('.')[1])
 nnoremap <silent> <C-s><C-s> :call VimuxSendText(StripLeadingWhiteSpace(getline('.')))<cr>
 
 nnoremap <silent> <leader>xp :call VimuxPromptCommand()<cr>
@@ -213,19 +213,22 @@ nnoremap <silent> <leader>xx :call VimuxRunLastCommand()<cr>
 nnoremap <silent> <leader>xc :call VimuxInterruptRunner()<cr>
 nnoremap <silent> <leader>xt :call VimuxRunCommand(my_functions#GetTestCommand())<cr>
 
-"Don't use VimuxRunCommand to avoid clearing the last command used.
-"TODO : Write a better fix because this fails if there is text on the line
+" Don't use VimuxRunCommand to avoid clearing the last command used.
+" TODO : Write a better fix because this fails if there is text on the line
 nnoremap <silent> <leader>xl :call VimuxSendText("clear\n")<cr>
 
-"Signify stuff
-let g:signify_update_on_focusgained=1 "Update VCS marks when focus gained
+" Signify stuff
+let g:signify_update_on_focusgained=1 " Update VCS marks when focus gained
+nmap <Leader>hd  :SignifyHunkDiff<cr>
+nmap <Leader>hu  :SignifyHunkUndo<cr>
+nmap <Leader>hs  :SignifyHunkUndo<cr>
 
-"Airline stuff
+" Airline stuff
 set noshowmode
 set laststatus=2
 :let g:airline_theme='understated'
 
-"Tmux navigator stuff
+" Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-A>h :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-A>j :TmuxNavigateDown<cr>
@@ -233,7 +236,7 @@ nnoremap <silent> <C-A>k :TmuxNavigateUp<cr>
 nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
 nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 
-"YCM settings
+" YCM settings
 set completeopt-=preview " Don't show the autocomplete results in the preview window.
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -246,13 +249,13 @@ autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
 nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
 
-"Gundo stuff
+" Gundo stuff
 noremap <Leader>g :GundoToggle<cr>
 if has('python3')
     let g:gundo_prefer_python3 = 1          " anything else breaks on Ubuntu 16.04+
 endif
 
-"fzf stuff
+" fzf stuff
 noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
 noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 
@@ -261,19 +264,19 @@ cabbrev ack AsyncRun rg --vimgrep
 cabbrev gd Gvdiffsplit
 cabbrev gdm Gvdiffsplit master
 
-"Hardtime settings
+" Hardtime settings
 let g:hardtime_default_on = 1
 let g:hardtime_allow_different_key = 0
 let g:hardtime_maxcount = 8
 let g:list_of_normal_keys = ['x', 'h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<LEFT>', '<RIGHT>', 'w', 'W', 'b', 'B']
 let g:list_of_visual_keys = ['h', 'j', 'k', 'l', '-', '+', '<UP>', '<DOWN>', '<LEFT>', '<RIGHT>', 'w', 'W', 'b', 'B']
 
-"Rtags stuff
+" Rtags stuff
 let g:rtagsUseLocationList = 0
 
 " Quickfix and AsyncRun stuff vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-" quickfix related remaps
+" Quickfix related remaps
 nmap <silent> <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
 nmap <silent> <Leader>Q :colder<cr>
 nmap <silent> <Leader>W :cnewer<cr>
@@ -284,19 +287,12 @@ noremap <silent> <C-c> :AsyncStop<CR>
 noremap <silent> <C-j> :call CNext()<cr>zz
 noremap <silent> <C-k> :call CPrev()<cr>zz
 
-" quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+" Quickfix stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-" peekaboo stuff
+" Peekaboo stuff
 let g:peekaboo_prefix = '<leader>'
 
-"Gitgutter stuff
-let g:gitgutter_map_keys = 0
-nmap <Leader>hn  :GitGutterNextHunk<cr>
-nmap <Leader>hp  :GitGutterPrevHunk<cr>
-nmap <Leader>hu  :GitGutterUndoHunk<cr>
-nmap <Leader>hs  :GitGutterStageHunk<cr>
-
-"Nerdtree stuff
+" Nerdtree stuff
 noremap <Leader>t :NERDTreeToggle<cr>
 noremap <Leader>o :NERDTreeFind<cr>
 let g:NERDTreeMapJumpNextSibling = '<Nop>'
@@ -308,12 +304,12 @@ syntax on
 set t_Co=256
 colorscheme wombat
 
-"Indent stuff
+" Indent stuff
 set expandtab
 set tabstop=2
 set shiftwidth=2
 
-"Don't treat the hash is a special case when indenting
+" Don't treat the hash is a special case when indenting
 set cindent
 set cinkeys-=0#
 set indentkeys-=0#
@@ -321,7 +317,7 @@ set indentkeys-=0#
 " Use smart indenting when starting a new line.
 set smartindent
 
-"Key remaps
+" Key remaps
 noremap zk zt
 noremap zj zb
 nnoremap Q <nop>
@@ -333,28 +329,28 @@ nnoremap <silent> <CR> :call Enter()<CR>
 nnoremap J :call MergeUp()<CR>
 nnoremap K :call SplitDown()<CR>
 
-"Tab navigation
+" Tab navigation
 nnoremap <C-tab> :tabnext<CR>
 nnoremap <C-S-tab> :tabprevious<CR>
 
 " Quit everything!
 noremap <C-q> :qa!<CR>
 
-"Use more intuitive binding for scrolling
+" Use more intuitive binding for scrolling
 map <C-L> 20zl " Scroll 20 characters to the right
 map <C-H> 20zh " Scroll 20 characters to the left
 
-"Disable arrows
+" Disable arrows
 map <up> <nop>
 map <down> <nop>
 map <left> <nop>
 map <right> <nop>
 
-"Split related behavior
+" Split related behavior
 set splitbelow
 set splitright
 
-"Misc
+" Misc
 set ignorecase
 set smartcase
 set ruler
@@ -365,7 +361,7 @@ set incsearch
 set backspace=2
 set modelines=0
 
-"Disabble X clipboard for faster boot
+" Disabble X clipboard for faster boot
 set clipboard=exclude:.*
 
 " Set to auto read when a file is changed from the outside
@@ -379,13 +375,13 @@ set fileformats=unix,dos,mac
 
 set encoding=utf-8
 
-"Toggle auto-indenting for code paste
+" Toggle auto-indenting for code paste
 set pastetoggle=<F2>
 
-"Display incomplete commands
+" Display incomplete commands
 set showcmd
 
-"Autocomplete like bash
+" Autocomplete like bash
 set wildmenu
 set wildmode=list:longest
 
@@ -395,7 +391,7 @@ set timeoutlen=1000 ttimeoutlen=10
 " Default to not read-only in vimdiff
 set noro
 
-"Also save with capital W
+" Also save with capital W
 command W w
 command Wq wq
 command WQ wq
@@ -403,7 +399,7 @@ command Q q
 command Qa qa
 command QA qa
 
-"Use persistent undo
+" Use persistent undo
 set undodir=~/.vim/undodir
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
