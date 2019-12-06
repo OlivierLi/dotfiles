@@ -65,7 +65,7 @@ function! my_functions#MoveToValidWindowAfterCommand()
   let regexes = ["e .*", ".* %", "vs.*"]
 
   for regex in regexes
-    if l:cmd =~ regex 
+    if l:cmd =~ regex
       call my_functions#GoToFirstValid()
     endif
   endfor
@@ -123,3 +123,10 @@ function! my_functions#GetTestCommand()
 
   return l:command
 endfunction
+
+" Generate commands abbreviations. Generated abbreviations verify that we are in the
+" command line and that the replacement is applied at the start on execution.
+function my_functions#CommandCabbr(abbreviation, expansion)
+  execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
+endfunction
+

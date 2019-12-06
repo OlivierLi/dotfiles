@@ -256,10 +256,11 @@ endif
 noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
 noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 
-" Commands abbreviations
-cabbrev ack AsyncRun rg --vimgrep
-cabbrev gd Gvdiffsplit
-cabbrev gdm Gvdiffsplit master
+" Define a command for command abbreviations and use it.
+command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
+CommandCabbr ack AsyncRun\ rg\ --vimgrep
+CommandCabbr gd Gvdiffsplit
+CommandCabbr gdm Gvdiffsplit\ master
 
 "Hardtime settings
 let g:hardtime_default_on = 1
