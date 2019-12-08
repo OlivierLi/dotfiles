@@ -38,7 +38,8 @@ call plug#end()
 
 " Variables======================================================================
 
-let g:goToFirst=1 " Controls whether <C-j> should take you to the first or next result
+let g:goToFirst = 1 " Controls whether <C-j> should take you to the first or next result
+let g:quickFixSize = 8 
 
 " Autocmds=======================================================================
 
@@ -129,7 +130,7 @@ endfunction
 function! BeforeAsynCommand()
     " We have new content in the quickFix. We whould start from the beginning
     let g:goToFirst=1
-    exec 'botright copen 8'
+    exec 'botright copen ' . g:quickFixSize
     call my_functions#GoToQF()
 endfunction
 
@@ -253,7 +254,10 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
+" Disable auto-closing of QuickFix when selecting result.
 autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
+" Always open the QuickFix with the same size.
+autocmd User YcmQuickFixOpened exec('copen ' . g:quickFixSize)
 
 nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
