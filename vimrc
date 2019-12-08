@@ -1,3 +1,4 @@
+" Environment checks============================================================
 if v:version < 801
   echoerr "Vim version >= 8.1 is needed!"
 endif
@@ -6,7 +7,7 @@ if !executable('rg')
   echoerr "Ripgrep not installed on machine!"
 endif
 
-
+" Plugins=======================================================================
 call plug#begin('~/.vim/plugged')
 
 if !&diff
