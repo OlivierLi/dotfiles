@@ -150,10 +150,15 @@ function! Enter()
     execute "normal! \<CR>"
 endfunction
 
+function! GetValidQFEntries()
+  " Only keep valid entries. (Those that match with erroformat)
+  return filter(getqflist(), 'v:val.valid')
+endfunction
+
 "Go to the next element of interest, infer what that is from context
 function! CNext()
 
-    if IsQFOpened() && len(getqflist()) != 0
+    if IsQFOpened() && len(GetValidQFEntries()) != 0
       call my_functions#GoToFirstValid()
 
       if g:goToFirst
@@ -174,7 +179,7 @@ endfunction
 "Go to the previous element of interest, infer what that is from context
 function! CPrev()
 
-    if IsQFOpened() && len(getqflist()) != 0
+    if IsQFOpened() && len(GetValidQFEntries()) != 0
       call my_functions#GoToFirstValid()
 
       " Detect end of list errors and loop around
