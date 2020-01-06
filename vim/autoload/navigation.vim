@@ -38,7 +38,7 @@ function! navigation#GetWindows(direction)
   let l:adjacent_windows = []
 
   if(a:direction == "left")
-    let l:SecondaryMeasureGetter = function('winheight')
+    let l:SecondarySizeGetter = function('winheight')
     let l:Comparator = function('navigation#lesser_than')
 
     let l:main_measure_index = 1
@@ -46,7 +46,7 @@ function! navigation#GetWindows(direction)
   endif
 
   if(a:direction == "right")
-    let l:SecondaryMeasureGetter = function('winheight')
+    let l:SecondarySizeGetter = function('winheight')
     let l:Comparator = function('navigation#greater_than')
 
     let l:main_measure_index = 1
@@ -55,7 +55,7 @@ function! navigation#GetWindows(direction)
 
   " Windows with a lower y value.
   if(a:direction == "up")
-    let l:SecondaryMeasureGetter = function('winwidth')
+    let l:SecondarySizeGetter = function('winwidth')
     let l:Comparator = function('navigation#lesser_than')
 
     let l:main_measure_index = 0
@@ -64,7 +64,7 @@ function! navigation#GetWindows(direction)
 
   " Windows with a higher y value.
   if(a:direction == "down")
-    let l:SecondaryMeasureGetter = function('winwidth')
+    let l:SecondarySizeGetter = function('winwidth')
     let l:Comparator = function('navigation#greater_than')
 
     let l:main_measure_index = 0
@@ -85,10 +85,9 @@ function! navigation#GetWindows(direction)
     let l:win_main_measure = win_screenpos(l:win)[l:main_measure_index]
 
     " TODO: Only count windows that "touch"
-    " TODO: Generalize function to all directions
 
-    if navigation#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondaryMeasureGetter(winnr()),
-          \ l:win_secondary_measure, l:win_secondary_measure + l:SecondaryMeasureGetter(l:win))
+    if navigation#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondarySizeGetter(winnr()),
+          \ l:win_secondary_measure, l:win_secondary_measure + l:SecondarySizeGetter(l:win))
 
       if(l:Comparator(l:win_main_measure , l:self_main_measure))
         call add(l:adjacent_windows, l:win)
