@@ -3,6 +3,101 @@ if exists("g:loaded_my_functions")
 endif
 let g:loaded_my_functions = 1
 
+function! my_functions#RangesOverlap(start1, end1, start2, end2)
+  if (a:start1 >= a:start2 && a:start1 <= a:end2)
+    return 1
+  endif
+
+  if (a:end1 >= a:start2 && a:end1 <= a:end2)
+    return 1
+  endif
+
+  if (a:start2 >= a:start1 && a:start2 <= a:end1)
+    return 1
+  endif
+
+  if (a:end2 >= a:start1 && a:end2 <= a:end1)
+    return 1
+  endif
+
+  return 0
+endfunction
+
+function my_functions#lesser_than(first, second)
+  return a:first < a:second
+endfunction
+
+function my_functions#greater_than(first, second)
+  return a:first > a:second
+endfunction
+
+function my_functions#GetWindows(direction)
+  let l:adjacent_windows = []
+
+
+  if(a:direction == "left")
+    let l:SecondaryMeasureGetter = function('winheight')
+    let l:Comparator = function('my_functions#lesser_than')
+
+    let l:main_measure_index = 1
+    let l:secondary_measure_index = 0
+  endif
+
+  if(a:direction == "right")
+    let l:SecondaryMeasureGetter = function('winheight')
+    let l:Comparator = function('my_functions#greater_than')
+
+    let l:main_measure_index = 1
+    let l:secondary_measure_index = 0
+  endif
+
+  " Windows with a lower y value.
+  if(a:direction == "up")
+    let l:SecondaryMeasureGetter = function('winwidth')
+    let l:Comparator = function('my_functions#lesser_than')
+
+    let l:main_measure_index = 0
+    let l:secondary_measure_index = 1
+  endif
+
+  " Windows with a higher y value.
+  if(a:direction == "down")
+    let l:SecondaryMeasureGetter = function('winwidth')
+    let l:Comparator = function('my_functions#greater_than')
+
+    let l:main_measure_index = 0
+    let l:secondary_measure_index = 1
+  endif
+
+  let l:self_secondary_measure = win_screenpos(0)[l:secondary_measure_index]
+  let l:self_main_measure = win_screenpos(0)[l:main_measure_index]
+
+  for l:win in range(1, winnr('$'))
+
+    " Do not compare to self.
+    if l:win == winnr() 
+      continue
+    endif
+
+    let l:win_secondary_measure = win_screenpos(l:win)[l:secondary_measure_index]
+    let l:win_main_measure = win_screenpos(l:win)[l:main_measure_index]
+
+    " TODO: Only count windows that "touch"
+    " TODO: Generalize function to all directions
+
+    if my_functions#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondaryMeasureGetter(winnr()),
+          \ l:win_secondary_measure, l:win_secondary_measure + l:SecondaryMeasureGetter(l:win))
+
+      if(l:Comparator(l:win_main_measure , l:self_main_measure))
+        call add(l:adjacent_windows, l:win)
+      endif
+
+    endif
+  endfor
+
+  return l:adjacent_windows
+endfunction
+
 "Test whether a window is valid, that is to say whether it is suitable to open a file or not
 function! my_functions#IsWinValid(win_num)
     let bnum = winbufnr(a:win_num) " Get the buffer number associated with window

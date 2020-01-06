@@ -48,9 +48,16 @@ call plug#end()
 let g:goToFirst = 1 " Controls whether <C-j> should take you to the first or next result
 let g:quickFixSize = 8 
 
+" Keep track of the last time a buffer was viewed.
+let g:buffer_access_times = {}
+
 " Autocmds=======================================================================
 
 augroup vimrc
+
+    " Update buffer acces times.
+    autocmd BufWinEnter, WinEnter * let g:buffer_access_times[bufnr('')] = localtime() " bufnr('') because these are windows events 
+    autocmd BufDelete * silent! call remove(g:buffer_access_times, expand('<abuf>')) " <abuf> because the buffer is closed and <abuf> is the effective buffer
 
     " Always have quickfix take the entire bottom of the screen
     autocmd FileType qf wincmd J
@@ -71,10 +78,10 @@ augroup vimrc
     autocmd VimResized * wincmd =
 
     " Open nerdtree on empty dirs and don't let it be the last window
-    autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
+    "autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    "autocmd StdinReadPre * let s:std_in=1
+    "autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
     " QuickFix autocmds
     autocmd FileType qf nnoremap <buffer> s :call OpenQF("vnew")<cr>
@@ -82,6 +89,8 @@ augroup vimrc
 
     " Always show the gutter
     autocmd BufRead,BufNewFile * setlocal signcolumn=yes
+
+    autocmd VimEnter * call navigation#test()
 
 augroup END
 
