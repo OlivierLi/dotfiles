@@ -33,42 +33,32 @@ function! navigation#RangesOverlap(start1, end1, start2, end2)
   return 0
 endfunction
 
+" TODO: Only count windows that "touch"
+
 " Retrieves all adjacent windows in |direction|.
 function! navigation#GetWindows(direction)
   let l:adjacent_windows = []
 
-  if(a:direction == "left")
+  if(a:direction == "left" || a:direction == "right")
+    let l:MainSizeizeGetter = function('winwidth')
     let l:SecondarySizeGetter = function('winheight')
-    let l:Comparator = function('navigation#lesser_than')
-
     let l:main_measure_index = 1
     let l:secondary_measure_index = 0
   endif
 
-  if(a:direction == "right")
-    let l:SecondarySizeGetter = function('winheight')
-    let l:Comparator = function('navigation#greater_than')
-
-    let l:main_measure_index = 1
-    let l:secondary_measure_index = 0
+  if(a:direction == "up" || a:direction == "down")
+    let l:MainSizeizeGetter = function('winheight')
+    let l:SecondarySizeGetter = function('winwidth')
+    let l:main_measure_index = 0
+    let l:secondary_measure_index = 1
   endif
 
-  " Windows with a lower y value.
-  if(a:direction == "up")
-    let l:SecondarySizeGetter = function('winwidth')
+  if(a:direction == "left" || a:direction == "up")
     let l:Comparator = function('navigation#lesser_than')
-
-    let l:main_measure_index = 0
-    let l:secondary_measure_index = 1
   endif
 
-  " Windows with a higher y value.
-  if(a:direction == "down")
-    let l:SecondarySizeGetter = function('winwidth')
+  if(a:direction == "right" || a:direction == "down")
     let l:Comparator = function('navigation#greater_than')
-
-    let l:main_measure_index = 0
-    let l:secondary_measure_index = 1
   endif
 
   let l:self_secondary_measure = win_screenpos(0)[l:secondary_measure_index]
@@ -84,16 +74,19 @@ function! navigation#GetWindows(direction)
     let l:win_secondary_measure = win_screenpos(l:win)[l:secondary_measure_index]
     let l:win_main_measure = win_screenpos(l:win)[l:main_measure_index]
 
-    " TODO: Only count windows that "touch"
-
-    if navigation#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondarySizeGetter(winnr()),
+    " If windows don't overlap on their secodary dimension..
+    if !navigation#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondarySizeGetter(winnr()),
           \ l:win_secondary_measure, l:win_secondary_measure + l:SecondarySizeGetter(l:win))
-
-      if(l:Comparator(l:win_main_measure , l:self_main_measure))
-        call add(l:adjacent_windows, l:win)
-      endif
-
+      continue
     endif
+
+    " If windows are not positioned correctly on their main position.
+    if(!l:Comparator(l:win_main_measure , l:self_main_measure))
+      continue
+    endif
+
+    call add(l:adjacent_windows, l:win)
+
   endfor
 
   return l:adjacent_windows

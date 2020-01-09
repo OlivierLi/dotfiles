@@ -90,7 +90,7 @@ augroup vimrc
     " Always show the gutter
     autocmd BufRead,BufNewFile * setlocal signcolumn=yes
 
-    autocmd VimEnter * call navigation#test()
+    "autocmd VimEnter * call navigation#test()
 
 augroup END
 
