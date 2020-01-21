@@ -228,10 +228,7 @@ nnoremap <silent> <leader>xp :call VimuxPromptCommand()<cr>
 nnoremap <silent> <leader>xx :call VimuxRunLastCommand()<cr>
 nnoremap <silent> <leader>xc :call VimuxInterruptRunner()<cr>
 nnoremap <silent> <leader>xt :call VimuxRunCommand(my_functions#GetTestCommand())<cr>
-
-" Don't use VimuxRunCommand to avoid clearing the last command used.
-" TODO : Write a better fix because this fails if there is text on the line
-nnoremap <silent> <leader>xl :call VimuxSendText("clear\n")<cr>
+nnoremap <silent> <leader>xl :call my_functions#RunVimuxCommandNoHistory("clear")<cr>
 
 " Signify stuff
 let g:signify_update_on_focusgained=1 " Update VCS marks when focus gained

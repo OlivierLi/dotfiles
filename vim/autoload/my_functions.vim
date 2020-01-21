@@ -130,3 +130,10 @@ function my_functions#CommandCabbr(abbreviation, expansion)
   execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
 endfunction
 
+" Init to empty to not get undefined warnings
+let g:VimuxLastCommand = ""
+function my_functions#RunVimuxCommandNoHistory(command)
+  let l:backup = g:VimuxLastCommand
+  call VimuxRunCommand(a:command)
+  let g:VimuxLastCommand = l:backup
+endfunction
