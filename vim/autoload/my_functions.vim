@@ -110,7 +110,9 @@ function! my_functions#GetTestCommand()
 
   " Choose the unit test target
   let l:full_path = expand('%')
-  if l:full_path =~ "^components.*"
+  if l:full_path =~ "^base.*"
+    let l:target = "base_unittests"
+  elseif l:full_path =~ "^components.*"
     let l:target = "components_unittests"
   elseif l:current_line =~ "IN_PROC_BROWSER_TEST_F.*"
     let l:target = "browser_tests"
