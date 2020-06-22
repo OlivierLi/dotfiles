@@ -33,37 +33,44 @@ function! navigation#RangesOverlap(start1, end1, start2, end2)
   return 0
 endfunction
 
-" TODO: Only count windows that "touch"
-
 " Retrieves all adjacent windows in |direction|.
 function! navigation#GetWindows(direction)
   let l:adjacent_windows = []
 
   if(a:direction == "left" || a:direction == "right")
-    let l:MainSizeizeGetter = function('winwidth')
+    let l:MainSizeGetter = function('winwidth')
     let l:SecondarySizeGetter = function('winheight')
     let l:main_measure_index = 1
     let l:secondary_measure_index = 0
   endif
 
   if(a:direction == "up" || a:direction == "down")
-    let l:MainSizeizeGetter = function('winheight')
+    let l:MainSizeGetter = function('winheight')
     let l:SecondarySizeGetter = function('winwidth')
     let l:main_measure_index = 0
     let l:secondary_measure_index = 1
   endif
 
+  let l:self_main_measure = win_screenpos(0)[l:main_measure_index]
+  let l:self_secondary_measure = win_screenpos(0)[l:secondary_measure_index]
+
   if(a:direction == "left" || a:direction == "up")
     let l:Comparator = function('navigation#lesser_than')
+
+    " To know if two windows touch you need to get the edges of interest.
+    " In these directions that's done by adding the main dimension on 
+    " the secondary window and taking the primary as is.
   endif
 
   if(a:direction == "right" || a:direction == "down")
     let l:Comparator = function('navigation#greater_than')
+
+    " To know if two windows touch you need to get the edges of interest.
+    " In these directions that's done by adding the primary dimension on 
+    " the main window and taking the secondary as is.
   endif
 
-  let l:self_secondary_measure = win_screenpos(0)[l:secondary_measure_index]
-  let l:self_main_measure = win_screenpos(0)[l:main_measure_index]
-
+  " For every window.
   for l:win in range(1, winnr('$'))
 
     " Do not compare to self.
@@ -71,8 +78,8 @@ function! navigation#GetWindows(direction)
       continue
     endif
 
-    let l:win_secondary_measure = win_screenpos(l:win)[l:secondary_measure_index]
     let l:win_main_measure = win_screenpos(l:win)[l:main_measure_index]
+    let l:win_secondary_measure = win_screenpos(l:win)[l:secondary_measure_index]
 
     " If windows don't overlap on their secodary dimension..
     if !navigation#RangesOverlap(l:self_secondary_measure , l:self_secondary_measure + l:SecondarySizeGetter(winnr()),
@@ -84,6 +91,32 @@ function! navigation#GetWindows(direction)
     if(!l:Comparator(l:win_main_measure , l:self_main_measure))
       continue
     endif
+
+    if a:direction == "left"
+      let distance = abs(l:self_main_measure - l:win_main_measure - l:MainSizeGetter(l:win) ) 
+      "echom l:distance
+      if distance != 1
+        continue
+      endif
+    endif
+
+    if a:direction == "right"
+      let distance = abs(l:self_main_measure + l:MainSizeGetter(winnr()) - l:win_main_measure)
+      echom l:distance
+      if distance != 1
+        continue
+      endif
+    endif
+
+    " TODO: Only keep windows that touch like this:
+
+    " If left : x + width must be within 1 of current_x 
+    " If up :   y + height must be within 1 of current_y 
+
+    " If right : x must be within 1 of current_x + current_width
+    " If down : y must be within 1 of current_y + current_height
+
+    " Note: for the previous comparisons we are always using main measure and main size
 
     call add(l:adjacent_windows, l:win)
 
@@ -105,6 +138,12 @@ function navigation#test()
   for l:win in range(1, winnr('$'))
     exec(l:win. 'wincmd w')
     call append(line('.'), "Window: ".winnr())
+
+    " TODO: Make a function that gives you all for edges.
+    " TODO: Print the size in x an y here to compare.
+    "call append(line('.'), "Size (x): " . winwidth(winnr()))
+    "call append(line('.'), "Size (y): " . winheight(winnr()))
+
     normal! J
     normal o
     call append(line('.'), "Windows to the left: ".string(navigation#GetWindows("left")))
