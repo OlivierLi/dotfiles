@@ -28,7 +28,6 @@ Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'olivierli/nerdcommenter'
 Plug 'takac/vim-hardtime'
-Plug 'lyuts/vim-rtags' , { 'for': 'cpp' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -257,6 +256,9 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_enable_diagnostic_signs = 0
 let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
+let g:ycm_auto_hover=''
+let g:ycm_clangd_args = ['--background-index=false']
+
 " Disable auto-closing of QuickFix when selecting result.
 autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
 " Always open the QuickFix with the same size.
@@ -264,6 +266,7 @@ autocmd User YcmQuickFixOpened exec('copen ' . g:quickFixSize)
 
 nnoremap <C-F> :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>rf :YcmCompleter GoToReferences<CR>
+nnoremap <leader>f :YcmCompleter FixIt<CR>
 
 " Gundo stuff
 noremap <Leader>g :GundoToggle<cr>
