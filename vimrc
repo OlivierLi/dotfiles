@@ -17,6 +17,9 @@ if !&diff
     Plug 'mhinz/vim-signify'
 endif
 
+Plug 'dracula/vim'
+Plug 'joshdick/onedark.vim'
+Plug 'drewtempelmeyer/palenight.vim'
 Plug 'aklt/plantuml-syntax'
 Plug 'benmills/vimux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -223,10 +226,10 @@ autocmd VimEnter * call VimuxOpenRunner()
 " TODO: Set br command : call VimuxSendText("br " . expand("%") . ":" .  getpos('.')[1])
 nnoremap <silent> <C-s><C-s> :call VimuxSendText(StripLeadingWhiteSpace(getline('.')))<cr>
 
-nnoremap <silent> <leader>xp :call VimuxPromptCommand()<cr>
-nnoremap <silent> <leader>xx :call VimuxRunLastCommand()<cr>
+nnoremap <silent> <leader>xp :wa <bar> call VimuxPromptCommand()<cr>
+nnoremap <silent> <leader>xx :wa <bar> call VimuxRunLastCommand()<cr>
 nnoremap <silent> <leader>xc :call VimuxInterruptRunner()<cr>
-nnoremap <silent> <leader>xt :call VimuxRunCommand(my_functions#GetTestCommand())<cr>
+nnoremap <silent> <leader>xt :wa <bar> call VimuxRunCommand(my_functions#GetTestCommand())<cr>
 nnoremap <silent> <leader>xl :call my_functions#RunVimuxCommandNoHistory("clear")<cr>
 
 " Signify stuff
@@ -238,7 +241,6 @@ nmap <Leader>hs  :SignifyHunkUndo<cr>
 " Airline stuff
 set noshowmode
 set laststatus=2
-:let g:airline_theme='understated'
 
 " Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
@@ -320,9 +322,21 @@ let g:NERDTreeMapJumpPrevSibling = '<Nop>'
 let g:NERDTreeMapHelp='<f1>'
 let g:NERDTreeMapQuit ='<Nop>'
 
+" Color stuff
 syntax on
-set t_Co=256
-colorscheme wombat
+
+if (has("termguicolors"))
+  set termguicolors
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  colorscheme dracula
+  let g:airline_theme='dracula'
+  set fillchars+=vert:│
+else
+  set t_Co=256
+  colorscheme wombat
+  :let g:airline_theme='understated'
+endif
 
 " Indent stuff
 set expandtab
