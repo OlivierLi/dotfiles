@@ -48,22 +48,14 @@ call plug#end()
 let g:goToFirst = 1 " Controls whether <C-j> should take you to the first or next result
 let g:quickFixSize = 8 
 
-" Keep track of the last time a buffer was viewed.
-let g:buffer_access_times = {}
-
 " Autocmds=======================================================================
 
 augroup vimrc
 
     " Update buffer acces times.
-
-    " bufnr('') because these are windows events 
-    autocmd BufWinEnter * let g:buffer_access_times[bufnr('')] = localtime() 
-    "autocmd BufWinEnter * let g:buffer_access_times[bufnr('')] = localtime() 
-
-    " <abuf> because the buffer is closed and <abuf> is the effective buffer
-    "autocmd BufDelete * silent! call remove(g:buffer_access_times, expand('<abuf>')) 
-    "autocmd WinLeave * silent! call remove(g:buffer_access_times, expand('<abuf>')) " <abuf> because the buffer is closed and <abuf> is the effective buffer
+    autocmd VimEnter * call navigation#update_time()
+    autocmd WinEnter * call navigation#update_time()
+    autocmd BufWinEnter * call navigation#update_time()
 
     " Always have quickfix take the entire bottom of the screen
     autocmd FileType qf wincmd J
@@ -84,10 +76,10 @@ augroup vimrc
     autocmd VimResized * wincmd =
 
     " Open nerdtree on empty dirs and don't let it be the last window
-    "autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    "autocmd StdinReadPre * let s:std_in=1
-    "autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-    "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
+    autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
     " QuickFix autocmds
     autocmd FileType qf nnoremap <buffer> s :call OpenQF("vnew")<cr>
@@ -95,8 +87,6 @@ augroup vimrc
 
     " Always show the gutter
     autocmd BufRead,BufNewFile * setlocal signcolumn=yes
-
-    "autocmd VimEnter * call navigation#test()
 
 augroup END
 
@@ -267,10 +257,10 @@ set laststatus=2
 
 " Tmux navigator stuff
 let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <C-A>h :TmuxNavigateLeft<cr>
-nnoremap <silent> <C-A>j :TmuxNavigateDown<cr>
-nnoremap <silent> <C-A>k :TmuxNavigateUp<cr>
-nnoremap <silent> <C-A>l :TmuxNavigateRight<cr>
+nnoremap <silent> <C-A>h :call navigation#go("Left")<cr>
+nnoremap <silent> <C-A>j :call navigation#go("Down")<cr>
+nnoremap <silent> <C-A>k :call navigation#go("Up")<cr>
+nnoremap <silent> <C-A>l :call navigation#go("Right")<cr>
 nnoremap <silent> <C-A>\ :TmuxNavigatePrevious<cr>
 
 " YCM settings
