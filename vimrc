@@ -7,6 +7,10 @@ if !executable('rg')
   echoerr "Ripgrep not installed on machine!"
 endif
 
+if !executable('bat')
+  echoerr "BatCat not installed on machine!"
+endif
+
 " Plugins=======================================================================
 call plug#begin('~/.vim/plugged')
 
@@ -284,7 +288,7 @@ noremap <silent> <C-t> :call InFirstValid("Files")<CR>
 command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
 CommandCabbr ack AsyncRun\ rg\ --vimgrep
 CommandCabbr gd Gvdiffsplit
-CommandCabbr gdm Gvdiffsplit\ master
+CommandCabbr gdm Gvdiffsplit\ 
 
 " Hardtime settings
 let g:hardtime_default_on = 1
@@ -329,6 +333,7 @@ if (has("termguicolors"))
   set termguicolors
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  let g:dracula_italic = 0
   colorscheme dracula
   let g:airline_theme='dracula'
   set fillchars+=vert:│
@@ -421,9 +426,6 @@ set wildmode=list:longest
 
 " Assume typist is reasonably fast and terminal is very fast
 set timeoutlen=1000 ttimeoutlen=10
-
-" Default to not read-only in vimdiff
-set noro
 
 " Also save with capital W
 command W w

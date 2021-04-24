@@ -19,8 +19,8 @@ upload() {
 }
 
 pull () {
-  git checkout master
-  git pull origin master
+  git checkout main
+  git pull origin main
   gclient sync 
   ninja -C ~/git/chromium/src/out/Default  -t compdb cxx cc > compile_commands.json
 }
