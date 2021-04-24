@@ -56,8 +56,14 @@ let g:buffer_access_times = {}
 augroup vimrc
 
     " Update buffer acces times.
-    autocmd BufWinEnter, WinEnter * let g:buffer_access_times[bufnr('')] = localtime() " bufnr('') because these are windows events 
-    autocmd BufDelete * silent! call remove(g:buffer_access_times, expand('<abuf>')) " <abuf> because the buffer is closed and <abuf> is the effective buffer
+
+    " bufnr('') because these are windows events 
+    autocmd BufWinEnter * let g:buffer_access_times[bufnr('')] = localtime() 
+    "autocmd BufWinEnter * let g:buffer_access_times[bufnr('')] = localtime() 
+
+    " <abuf> because the buffer is closed and <abuf> is the effective buffer
+    "autocmd BufDelete * silent! call remove(g:buffer_access_times, expand('<abuf>')) 
+    "autocmd WinLeave * silent! call remove(g:buffer_access_times, expand('<abuf>')) " <abuf> because the buffer is closed and <abuf> is the effective buffer
 
     " Always have quickfix take the entire bottom of the screen
     autocmd FileType qf wincmd J

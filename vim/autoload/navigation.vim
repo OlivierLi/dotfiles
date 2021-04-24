@@ -92,31 +92,19 @@ function! navigation#GetWindows(direction)
       continue
     endif
 
-    if a:direction == "left"
+    if a:direction == "left" || a:direction == "up"
       let distance = abs(l:self_main_measure - l:win_main_measure - l:MainSizeGetter(l:win) ) 
-      "echom l:distance
       if distance != 1
         continue
       endif
     endif
 
-    if a:direction == "right"
+    if a:direction == "right" || a:direction == "down"
       let distance = abs(l:self_main_measure + l:MainSizeGetter(winnr()) - l:win_main_measure)
-      echom l:distance
       if distance != 1
         continue
       endif
     endif
-
-    " TODO: Only keep windows that touch like this:
-
-    " If left : x + width must be within 1 of current_x 
-    " If up :   y + height must be within 1 of current_y 
-
-    " If right : x must be within 1 of current_x + current_width
-    " If down : y must be within 1 of current_y + current_height
-
-    " Note: for the previous comparisons we are always using main measure and main size
 
     call add(l:adjacent_windows, l:win)
 
