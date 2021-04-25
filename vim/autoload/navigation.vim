@@ -2,9 +2,9 @@ if exists("g:loaded_navigation")
   finish
 endif
 let g:loaded_navigation = 1
-let g:start_time = reltime()
 
 " Keep track of the last time a buffer was viewed.
+let g:start_time = reltime()
 let g:buffer_access_times = {}
 
 " Small utility functions ------------------------------------------------------
@@ -59,19 +59,17 @@ function! navigation#GetWindows(direction)
   let l:self_secondary_measure = win_screenpos(0)[l:secondary_measure_index]
 
   if(a:direction == "Left" || a:direction == "Up")
-    let l:Comparator = function('navigation#lesser_than')
-
     " To know if two windows touch you need to get the edges of interest.
     " In these directions that's done by adding the main dimension on 
     " the secondary window and taking the primary as is.
+    let l:Comparator = function('navigation#lesser_than')
   endif
 
   if(a:direction == "Right" || a:direction == "Down")
-    let l:Comparator = function('navigation#greater_than')
-
     " To know if two windows touch you need to get the edges of interest.
     " In these directions that's done by adding the primary dimension on 
     " the main window and taking the secondary as is.
+    let l:Comparator = function('navigation#greater_than')
   endif
 
   " For every window.
@@ -126,10 +124,12 @@ function navigation#go(direction)
   let l:window_to_go_to = -1 
   for l:win in navigation#GetWindows(a:direction)
 
+    " Do not compare to self.
     if l:win == win_getid()
       continue
     endif
 
+    " If for some reason the window was never registered ignore it.
     if !has_key(g:buffer_access_times, l:win)
       continue
     endif
@@ -141,7 +141,7 @@ function navigation#go(direction)
     endif
   endfor
 
-  if l:window_to_go_to != -1 && l:window_to_go_to != win_getid()
+  if l:window_to_go_to != -1
     call win_gotoid(l:window_to_go_to)
   else
     execute "TmuxNavigate".a:direction

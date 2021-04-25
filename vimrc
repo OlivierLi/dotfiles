@@ -29,8 +29,6 @@ Plug 'benmills/vimux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'skywind3000/asyncrun.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/async.vim'
 Plug 'sjl/gundo.vim'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'olivierli/nerdcommenter'
@@ -51,14 +49,13 @@ let g:quickFixSize = 8
 " Autocmds=======================================================================
 
 augroup vimrc
+    " Always have quickfix take the entire bottom of the screen
+    autocmd FileType qf wincmd J
 
     " Update buffer acces times.
     autocmd VimEnter * call navigation#update_time()
     autocmd WinEnter * call navigation#update_time()
     autocmd BufWinEnter * call navigation#update_time()
-
-    " Always have quickfix take the entire bottom of the screen
-    autocmd FileType qf wincmd J
 
     " Some command should only open from editable buffers.
     autocmd CmdlineLeave * call my_functions#MoveToValidWindowAfterCommand()
@@ -75,10 +72,14 @@ augroup vimrc
     " The vimsplits should stay proportional through resizes
     autocmd VimResized * wincmd =
 
-    " Open nerdtree on empty dirs and don't let it be the last window
-    autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    " Flag vim being opened with piped in data.
     autocmd StdinReadPre * let s:std_in=1
+
+    " Open nerdtree on when vim started by itself (and not on piped in data) 
+    autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    " Open nerdtree on empty dirs (and not on piped in data) 
     autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+    " Don't let it be the last window
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
 
     " QuickFix autocmds
