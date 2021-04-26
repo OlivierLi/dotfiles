@@ -143,7 +143,7 @@ endfunction
 function! BeforeAsynCommand()
     " We have new content in the quickFix. We whould start from the beginning
     let g:goToFirst=1
-    exec 'botright copen ' . g:quickFixSize
+    call my_functions#MyCopen(g:quickFixSize)
     call my_functions#GoToQF()
 endfunction
 
@@ -314,7 +314,7 @@ let g:rtagsUseLocationList = 0
 " Quickfix and AsyncRun stuff vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 " Quickfix related remaps
-nmap <silent> <Leader>q :call asyncrun#quickfix_toggle(10)<cr>
+nmap <silent> <Leader>q :call my_functions#ToggleQuickFix()<cr>
 nmap <silent> <Leader>Q :colder<cr>
 nmap <silent> <Leader>W :cnewer<cr>
 nnoremap <leader>b :AsyncRun -program=make @<CR>

@@ -3,6 +3,32 @@ if exists("g:loaded_my_functions")
 endif
 let g:loaded_my_functions = 1
 
+function my_functions#MyCopen(size)
+    call navigation#suspend_time_updates()
+    execute 'copen '. a:size
+    call navigation#reinstante_time_updates()
+    call navigation#update_time()
+endfunction
+
+function! MyHandleWinClose()
+  if get(t:, '_win_count', 0) > winnr('$')
+    call navigation#go_back()
+  endif
+  let t:_win_count = winnr('$')
+endfun
+augroup vimrc_user
+  au!
+  au BufWinEnter,WinEnter,BufDelete * call MyHandleWinClose()
+augroup END
+
+function! my_functions#ToggleQuickFix()
+  if empty(filter(getwininfo(), 'v:val.quickfix'))
+    call my_functions#MyCopen(8)
+  else
+    cclose
+  endif
+endfunction
+
 "Test whether a window is valid, that is to say whether it is suitable to open a file or not
 function! my_functions#IsWinValid(win_num)
     let bnum = winbufnr(a:win_num) " Get the buffer number associated with window

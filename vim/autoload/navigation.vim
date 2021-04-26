@@ -7,6 +7,9 @@ let g:loaded_navigation = 1
 let g:start_time = reltime()
 let g:buffer_access_times = {}
 
+" By default update visited times.
+let g:should_update_time = 0
+
 " Small utility functions ------------------------------------------------------
 function! navigation#lesser_than(first, second)
   return a:first < a:second
@@ -115,14 +118,25 @@ function! navigation#GetWindows(direction)
   return l:adjacent_windows
 endfunction
 
-function navigation#update_time()
-  let g:buffer_access_times[win_getid(winnr())] = reltimefloat(reltime(g:start_time))
+function navigation#suspend_time_updates()
+  let g:should_update_time = -1
 endfunction
 
-function navigation#go(direction)
+function navigation#reinstante_time_updates()
+  let g:should_update_time = 0
+endfunction
+
+function navigation#update_time()
+  if g:should_update_time == 0
+    let g:buffer_access_times[win_getid(winnr())] = reltimefloat(reltime(g:start_time))
+  endif
+endfunction
+
+function navigation#get_newest(window_list)
   let l:max_time = 0
   let l:window_to_go_to = -1 
-  for l:win in navigation#GetWindows(a:direction)
+
+  for l:win in a:window_list
 
     " Do not compare to self.
     if l:win == win_getid()
@@ -140,6 +154,32 @@ function navigation#go(direction)
       let l:window_to_go_to = l:win
     endif
   endfor
+
+  return l:window_to_go_to
+endfunction
+
+function navigation#go_back()
+  let l:windows_for_tab = []
+  for l:win in range(1, winnr('$'))
+
+    if l:win == win_getid()
+      continue
+    endif
+
+    call add(l:windows_for_tab , win_getid(l:win))
+  endfor
+
+  let l:window_to_go_to = navigation#get_newest(l:windows_for_tab)
+
+  if l:window_to_go_to != -1
+    call win_gotoid(l:window_to_go_to)
+  endif
+
+endfunction
+
+function navigation#go(direction)
+
+  let l:window_to_go_to = navigation#get_newest(navigation#GetWindows(a:direction))
 
   if l:window_to_go_to != -1
     call win_gotoid(l:window_to_go_to)
