@@ -242,8 +242,9 @@ nnoremap <silent> <C-s><C-s> :call VimuxSendText(StripLeadingWhiteSpace(getline(
 nnoremap <silent> <leader>xp :wa <bar> call VimuxPromptCommand()<cr>
 nnoremap <silent> <leader>xx :wa <bar> call VimuxRunLastCommand()<cr>
 nnoremap <silent> <leader>xc :call VimuxInterruptRunner()<cr>
-nnoremap <silent> <leader>xt :wa <bar> call VimuxRunCommand(my_functions#GetTestCommand())<cr>
 nnoremap <silent> <leader>xl :call my_functions#RunVimuxCommandNoHistory("clear")<cr>
+nnoremap <silent> <leader>xt :wa <bar> call VimuxRunCommand(my_functions#GetTestCommand("line"))<cr>
+nnoremap <silent> <leader>xa :wa <bar> call VimuxRunCommand(my_functions#GetTestCommand("all"))<cr>
 
 " Signify stuff
 let g:signify_update_on_focusgained=1 " Update VCS marks when focus gained

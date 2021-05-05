@@ -117,8 +117,14 @@ function! my_functions#Pop(l, i)
 endfunction
 
 " Function to get the test command for a Chromium test.
-function! my_functions#GetTestCommand()
-  let l:command = "./tools/autotest.py -C out/Default " . expand('%:p') . " --no-try-android-wrappers --line ". getpos('.')[1]
+function! my_functions#GetTestCommand(mode)
+  if a:mode == "line"
+    let l:line_sub_command = " --line ". getpos('.')[1]
+  else
+    let l:line_sub_command = ""
+  endif
+
+  let l:command = "./tools/autotest.py -C out/Default " . expand('%:p') . " --no-try-android-wrappers" . l:line_sub_command
   return l:command
 endfunction
 
