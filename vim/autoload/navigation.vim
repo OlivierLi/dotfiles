@@ -158,6 +158,7 @@ function navigation#get_newest(window_list)
   return l:window_to_go_to
 endfunction
 
+" Navigate back to the most recently visited window. No matter the direction or distance.
 function navigation#go_back()
   let l:windows_for_tab = []
   for l:win in range(1, winnr('$'))
@@ -177,6 +178,9 @@ function navigation#go_back()
 
 endfunction
 
+" When moving in a direction prioritized most recently used windows. 
+" Fallback on regular move if we're exiting vim or the there are no viable
+" windows.
 function navigation#go(direction)
 
   let l:window_to_go_to = navigation#get_newest(navigation#GetWindows(a:direction))

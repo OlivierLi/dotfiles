@@ -3,6 +3,9 @@ if exists("g:loaded_my_functions")
 endif
 let g:loaded_my_functions = 1
 
+" Opening the quickfix will start by going to the nearest window and then spliting.
+" We don't want to update window visit times during that operation since the moves
+" were not user initiated.
 function my_functions#MyCopen(size)
     call navigation#suspend_time_updates()
     execute 'copen '. a:size
@@ -10,6 +13,8 @@ function my_functions#MyCopen(size)
     call navigation#update_time()
 endfunction
 
+" Self contained detection for closed windows. Navigates back to the most recent
+" window when this is detected.
 function! MyHandleWinClose()
   if get(t:, '_win_count', 0) > winnr('$')
     call navigation#go_back()
@@ -113,42 +118,7 @@ endfunction
 
 " Function to get the test command for a Chromium test.
 function! my_functions#GetTestCommand()
-  "TODO : Warn of ignore DISABLED flag
-
-  let l:current_line = getline(getpos('.')[1])
-
-  " Sometimes the test name is on two lines
-  if l:current_line !~ ".*{$"
-    let l:second_line = substitute(getline(getpos('.')[1]+1), "^ *", "", "")
-    let l:test_name = substitute(l:current_line . l:second_line , "\n", "", "")
-  else
-    let l:test_name = l:current_line
-  endif
-
-  " Remove everything before the class name
-  let l:test_name = substitute(l:test_name, "^.*(","", "")
-  " Separate by period instead of comma
-  let l:test_name = substitute(l:test_name, ',', '.', '')
-  " Remove stuff at the end
-  let l:test_name = substitute(l:test_name, ').*', '', '')
-  " Remove ALL spaces
-  let l:test_name = substitute(l:test_name, ' ', '', '')
-
-  " Choose the unit test target
-  let l:full_path = expand('%')
-  if l:full_path =~ "^base.*"
-    let l:target = "base_unittests"
-  elseif l:full_path =~ "^components.*"
-    let l:target = "components_unittests"
-  elseif l:current_line =~ "IN_PROC_BROWSER_TEST_F.*"
-    let l:target = "browser_tests"
-  else
-    let l:target = "unit_tests"
-  endif
-
-  " TODO: running arguments : Add the correct \[0-9]+ or whatever for parametrized tests
-  let l:command = "run_chrome_tests " .  l:target . " run " . l:test_name
-
+  let l:command = "./tools/autotest.py -C out/Default " . expand('%:p') . " --no-try-android-wrappers --line ". getpos('.')[1]
   return l:command
 endfunction
 

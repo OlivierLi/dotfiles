@@ -24,7 +24,6 @@ endif
 Plug 'dracula/vim'
 Plug 'joshdick/onedark.vim'
 Plug 'drewtempelmeyer/palenight.vim'
-Plug 'aklt/plantuml-syntax'
 Plug 'benmills/vimux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
