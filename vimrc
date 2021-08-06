@@ -7,10 +7,6 @@ if !executable('rg')
   echoerr "Ripgrep not installed on machine!"
 endif
 
-if !executable('bat')
-  echoerr "BatCat not installed on machine!"
-endif
-
 " Plugins=======================================================================
 call plug#begin('~/.vim/plugged')
 
@@ -50,6 +46,9 @@ let g:quickFixSize = 8
 augroup vimrc
     " Always have quickfix take the entire bottom of the screen
     autocmd FileType qf wincmd J
+
+    " Map mac files to c++ so that Ycm can parse
+    autocmd BufNewFile,BufRead *.mm set filetype=cpp
 
     " Update buffer acces times.
     autocmd VimEnter * call navigation#update_time()
