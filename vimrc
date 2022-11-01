@@ -296,7 +296,7 @@ noremap <silent> <C-h> :call InFirstValid("History")<CR>
 
 " Define a command for command abbreviations and use it.
 command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
-CommandCabbr ack AsyncRun\ rg\ --vimgrep
+CommandCabbr ack AsyncRun\ rg\ --vimgrep\ --no-ignore-vcs
 CommandCabbr gd Gvdiffsplit
 CommandCabbr gdm Gvdiffsplit\ 
 
@@ -318,6 +318,7 @@ nmap <silent> <Leader>Q :colder<cr>
 nmap <silent> <Leader>W :cnewer<cr>
 nnoremap <leader>b :AsyncRun -program=make @<CR>
 noremap <silent> <C-c> :AsyncStop<CR>
+nnoremap <leader>a :AsyncRun rg --vimgrep <cword><CR>
 
 " Navigate the results without losing focus
 noremap <silent> <C-j> :call CNext()<cr>zz

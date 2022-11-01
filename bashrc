@@ -1,7 +1,7 @@
 stty -ixon
 
 export VISUAL="vim"
-export FZF_DEFAULT_COMMAND="rg --files"
+export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 alias format="git cl format"
@@ -23,4 +23,12 @@ pull () {
   git pull origin main
   gclient sync 
   ninja -C ~/git/chromium/src/out/Default  -t compdb cxx cc > compile_commands.json
+}
+
+csv () {
+  csvlook $1 | vim -
+}
+
+csv_sort () {
+  csvsort -c $2 $1 | csvlook | vim -
 }
