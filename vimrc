@@ -39,7 +39,7 @@ call plug#end()
 " Variables======================================================================
 
 let g:goToFirst = 1 " Controls whether <C-j> should take you to the first or next result
-let g:quickFixSize = 8 
+let g:quickFixSize = 8
 
 " Autocmds=======================================================================
 
@@ -292,7 +292,7 @@ endif
 " fzf stuff
 noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
 noremap <silent> <C-t> :call InFirstValid("Files")<CR>
-noremap <silent> <C-h> :call InFirstValid("History")<CR>
+noremap <silent> <Leader>h :call InFirstValid("History")<CR>
 
 " Define a command for command abbreviations and use it.
 command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
