@@ -73,9 +73,9 @@ augroup vimrc
     " Flag vim being opened with piped in data.
     autocmd StdinReadPre * let s:std_in=1
 
-    " Open nerdtree on when vim started by itself (and not on piped in data) 
+    " Open nerdtree on when vim started by itself (and not on piped in data)
     autocmd VimEnter * if exists(":NERDTree") && argc() == 0 && !exists("s:std_in") | NERDTree | endif
-    " Open nerdtree on empty dirs (and not on piped in data) 
+    " Open nerdtree on empty dirs (and not on piped in data)
     autocmd VimEnter * if exists(":NERDTree") && argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
     " Don't let it be the last window
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif "winnr("$) for index of bottom right window
@@ -217,7 +217,7 @@ function! SetMakeprg()
 endfunction
 call SetMakeprg()
 
-if getcwd() =~ ".*/chromium/src" 
+if getcwd() =~ ".*/chromium/src"
   let &makeprg = "autoninja -C out/Default"
 endif
 
@@ -298,7 +298,7 @@ noremap <silent> <Leader>h :call InFirstValid("History")<CR>
 command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
 CommandCabbr ack AsyncRun\ rg\ --vimgrep\ --no-ignore-vcs
 CommandCabbr gd Gvdiffsplit
-CommandCabbr gdm Gvdiffsplit\ 
+CommandCabbr gdm Gvdiffsplit\
 
 " Hardtime settings
 let g:hardtime_default_on = 1
