@@ -217,10 +217,6 @@ function! SetMakeprg()
 endfunction
 call SetMakeprg()
 
-if getcwd() =~ ".*/chromium/src"
-  let &makeprg = "autoninja -C out/Default"
-endif
-
 " Used to collapse all blocks in a vimdiff
 function CollapseAllBlocks()
     " Only search the unfolded areas
@@ -292,7 +288,7 @@ endif
 " fzf stuff
 noremap <silent> <C-b> :call InFirstValid("Buffers")<CR>
 noremap <silent> <C-t> :call InFirstValid("Files")<CR>
-noremap <silent> <Leader>h :call InFirstValid("History")<CR>
+noremap <silent> <C-y> :call InFirstValid("History")<CR>
 
 " Define a command for command abbreviations and use it.
 command -nargs=+ CommandCabbr call my_functions#CommandCabbr(<f-args>)
