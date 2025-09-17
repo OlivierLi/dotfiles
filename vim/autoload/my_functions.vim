@@ -124,7 +124,7 @@ function! my_functions#GetTestCommand(mode)
     let l:line_sub_command = ""
   endif
 
-  let l:command = "./tools/autotest.py -C out/Release " . expand('%:p') . " --no-try-android-wrappers" . l:line_sub_command
+  let l:command = "./tools/autotest.py -C out/Default " . expand('%:p') . " --no-try-android-wrappers" . l:line_sub_command
   return l:command
 endfunction
 

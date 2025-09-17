@@ -34,6 +34,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'kshenoy/vim-signature' " Handle markers in the gutter
 Plug 'rhysd/vim-llvm'
+Plug 'derekwyatt/vim-fswitch'
 call plug#end()
 
 " Variables======================================================================
@@ -227,6 +228,17 @@ noremap <silent> <leader>c :call CollapseAllBlocks()<CR>
 
 " The rest =====================================================================
 
+" fswitch stuff
+augroup mycppfiles
+   au!
+   au BufEnter *.h let b:fswitchdst  = 'cpp,cc,C'
+   au BufEnter *.h let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+   au BufEnter *.cc let b:fswitchdst  = 'h'
+   au BufEnter *.cc let b:fswitchlocs = 'reg:/include/src/,reg:/include.*/src/'
+ augroup END
+nnoremap <silent> <leader>s :FSSplitRight<cr>
+nnoremap <silent> <leader>S :FSHere <cr>
+
 " Vimux stuff
 let g:VimuxOrientation = "h"
 autocmd VimEnter * call VimuxOpenRunner()
@@ -269,6 +281,7 @@ let g:ycm_enable_diagnostic_highlighting = 0
 let g:ycm_global_ycm_extra_conf = "~/git/dotfiles/ycm_extra_conf.py"
 let g:ycm_auto_hover=''
 let g:ycm_clangd_args = ['--background-index=false']
+let g:ycm_clangd_binary_path = "/home/olivier/git/chromium/src/third_party/llvm-build/Release+Asserts/bin/clangd"
 
 " Disable auto-closing of QuickFix when selecting result.
 autocmd User YcmQuickFixOpened autocmd! ycmquickfix WinLeave
